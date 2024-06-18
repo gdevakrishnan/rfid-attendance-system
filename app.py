@@ -141,18 +141,18 @@ def put_attendance(data):
         "presence": presence
     })
 
-    # if (firstTime):
-    #     try:
-    #         message_body = f"Hello {data['name']}, welcome to Tech Vaseegrah"
-    #         # Send the message using Twilio
-    #         message = messenger_client.messages.create(
-    #             from_=twilio_mobile_number,
-    #             body=message_body,
-    #             to="+91" + str(data['mobile'])
-    #         )
-    #         print(f"Message sent successfully: SID {message.sid}")
-    #     except TwilioRestException as e:
-    #         print(f"Failed to send message: {e}")
+    if (firstTime):
+        try:
+            message_body = f"Hello {data['name']}, welcome to Tech Vaseegrah"
+            # Send the message using Twilio
+            message = messenger_client.messages.create(
+                from_=twilio_mobile_number,
+                body=message_body,
+                to="+91" + str(data['mobile'])
+            )
+            print(f"Message sent successfully: SID {message.sid}")
+        except TwilioRestException as e:
+            print(f"Failed to send message: {e}")
 
 # To find the attendance is first time of the day
 def firstTimeAttendance(name, rfid_id, date):

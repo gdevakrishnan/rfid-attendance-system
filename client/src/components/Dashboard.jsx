@@ -9,7 +9,6 @@ function Dashboard() {
   const [status, setStatus] = useState(false);
 
   const Template = () => {
-    console.log(attendance);
     return (
       <table>
         <thead>
