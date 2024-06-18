@@ -50,6 +50,7 @@ function Dashboard() {
                 <th>Name</th>
                 <th>Date</th>
                 <th>Time</th>
+                <th>Presence</th>
               </tr>
             </thead>
             <tbody>
@@ -60,6 +61,7 @@ function Dashboard() {
                       <td>{aData.name}</td>
                       <td>{aData.date}</td>
                       <td>{aData.time}</td>
+                      <td>{(aData.presence) ? "IN" : "OUT"}</td>
                     </tr>
                   );
                 })

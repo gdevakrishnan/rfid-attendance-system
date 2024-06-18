@@ -78,7 +78,7 @@ function Profiles() {
                                             </tr>
                                             <tr>
                                                 <th>Working Hours</th>
-                                                <td>{ profile.workingHours } hours</td>
+                                                <td>{ profile.working_hours } hours</td>
                                             </tr>
                                             <tr>
                                                 <th>Salary</th>
