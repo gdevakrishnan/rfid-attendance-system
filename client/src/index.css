@@ -1,0 +1,470 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style-type: none;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    font-family: "Roboto", sans-serif;
+    overflow-x: hidden;
+}
+
+.notFound {
+    color: #525151;
+    margin-bottom: 20px;
+}
+
+.page {
+    min-height: 100vh;
+    height: auto;
+    padding: 50px 0px;
+}
+
+/* Header Starts */
+.nav {
+    height: 50px;
+    width: 100%;
+    background-color: #525151;
+    display: flex;
+    justify-content: space-around;
+    padding: 0px 20px;
+    z-index: 999;
+}
+
+.nav .logo {
+    line-height: 50px;
+    font-size: 24px;
+    letter-spacing: 2px;
+    color: #FFFFFF;
+}
+
+.nav ul {
+    display: flex;
+    justify-content: center;
+    line-height: 40px;
+}
+
+.nav ul li {
+    margin: 0px 10px;
+    padding: 0px 10px;
+    height: 90%;
+    line-height: 50px;
+    transition: all 0.2s ease;
+}
+
+.nav ul li.active,
+.nav ul li:hover {
+    border-bottom: 4px solid #FFFFFF;
+}
+
+.nav ul li a {
+    font-size: 16px;
+    font-weight: normal;
+    letter-spacing: 1px;
+    color: #FFFFFF;
+}
+
+#check {
+    display: none;
+}
+
+.nav .fa {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    color: #fcfcfc;
+    font-size: 28px;
+    cursor: pointer;
+    display: none;
+}
+
+@media screen and (max-width: 800px) {
+    .nav {
+        flex-direction: column;
+    }
+
+    .nav .logo {
+        text-align: center;
+    }
+
+    .nav ul {
+        background-color: rgba(212, 212, 212);
+        flex-direction: column;
+        position: absolute;
+        text-align: center;
+        top: 60px;
+        right: -100%;
+        height: auto;
+        width: 40%;
+        transition: all 1s ease-in-out;
+        /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+    }
+
+    .nav .fa {
+        display: block;
+    }
+
+    #check:checked~ul {
+        right: 10px;
+    }
+
+    .nav ul li {
+        line-height: 60px;
+    }
+
+    .nav ul li.active,
+    .nav ul li:hover {
+        border-bottom: none;
+    }
+
+    .nav ul li a {
+        color: rgb(43, 42, 42);
+        font-size: 20px;
+        letter-spacing: 0.8px;
+    }
+
+    .nav ul li:hover a {
+        color: #FFFFFF;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .nav ul {
+        width: 50%;
+    }
+}
+
+/* Header Ends */
+
+/* Message */
+.msg_container {
+    width: 100vw;
+    height: auto;
+    padding: 20px;
+    border: 4px solid #024b02;
+    background-color: #7ef37e;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.msg_container .msg {
+    color: #024b02;
+    font-weight: 400;
+}
+
+.msg_container button {
+    color: #024b02;
+    border: 2px solid #024b02;
+    background-color: #7ef37e;
+    font-size: 14px;
+    padding: 10px;
+    font-weight: 600;
+}
+
+/* Dashboard Table */
+.tablePage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.tablePage form {
+    width: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.tablePage form input {
+    padding: 4px 12px;
+}
+
+.tablePage form input:focus {
+    outline: none;
+    outline: 2px solid #2b2b2b;
+    outline-offset: 2px;
+}
+
+.tablePage form .btn {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    margin: 10px auto 20px;
+}
+
+.tablePage form .btn input[type="submit"],
+.tablePage form .btn button {
+    font-size: 0.8rem;
+    background-color: #525151;
+    color: #fcfcfc;
+    padding: 4px 20px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+}
+
+.tablePage table {
+    width: 60vw;
+    border-collapse: collapse;
+}
+
+.tablePage .filterTable {
+    margin-bottom: 30px;
+}
+
+.tablePage table thead {
+    background-color: #525151;
+}
+
+.tablePage table thead tr {
+    height: 40px;
+}
+
+.tablePage table thead tr th {
+    color: #fcfcfc;
+    font-weight: 400;
+}
+
+.tablePage table tbody tr {
+    border-bottom: 1px solid #525151;
+}
+
+.tablePage table tbody tr td {
+    padding: 10px 20px;
+}
+
+/* attendance Page */
+.attendancePage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.attendancePage .btn {
+    width: 40vw;
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+
+.attendancePage .btn button,
+.attendancePage button {
+    background-color: #525151;
+    color: #fcfcfc;
+    font-size: 16px;
+    padding: 8px 24px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.attendancePage table {
+    width: 40vw;
+    border-collapse: collapse;
+    margin-bottom: 40px;
+}
+
+.attendancePage table tbody tr {
+    height: 40px;
+    border: 2px solid #525151;
+}
+
+.attendancePage table tbody tr th {
+    text-align: center;
+    width: 50%;
+    background-color: #525151;
+    color: #fcfcfc;
+    font-weight: 400;
+}
+
+.attendancePage table tbody tr td {
+    text-align: center;
+}
+
+@media screen and (max-width: 700px) {
+
+    .tablePage table,
+    .attendancePage table {
+        width: 90%;
+    }
+}
+
+/* Train Page */
+.trainPage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.trainPage form {
+    width: 30vw;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.trainPage form .form_group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.trainPage form .form_group label {
+    color: #2b2b2b;
+    font-size: 1rem;
+}
+
+.trainPage form input[type="text"],
+.trainPage form input[type="number"] {
+    width: 100%;
+    outline: none;
+    border: 1px solid #525151;
+    border-radius: 4px;
+    padding: 4px 10px;
+}
+
+.trainPage form input[type="text"]:focus,
+.trainPage form input[type="number"]:focus {
+    border: 4px solid #525151;
+}
+
+.trainPage form input[type="submit"] {
+    background-color: #525151;
+    color: #fcfcfc;
+    font-size: 16px;
+    padding: 8px 24px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.trainPage p {
+    width: 30vw;
+    background-color: rgb(255, 255, 164);
+    padding: 10px 20px;
+    line-height: 26px;
+    color: orange;
+    border: 2px solid orange;
+}
+
+@media screen and (max-width: 700px) {
+
+    .trainPage form,
+    .trainPage p {
+        width: 80%;
+    }
+}
+
+/* Footer Starts */
+footer {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer p {
+    font-size: 20px;
+    color: #8d8d8d;
+}
+
+footer p .fa {
+    margin: 0;
+    font-size: 20px;
+    width: 20px;
+    padding: 0;
+    color: #8d8d8d;
+}
+
+footer p .company {
+    color: #2b2b2b;
+}
+
+@media screen and (max-width: 900px) {
+    footer p {
+        line-height: 40px;
+    }
+
+    footer p .company {
+        display: block;
+        text-align: center;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    footer p {
+        font-size: 18px;
+        line-height: 40px;
+    }
+
+    footer p .fa {
+        font-size: 18px;
+        width: 18px;
+    }
+}
+
+/* Footer Ends */
+
+/* Profiles Page */
+.profilesPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.profilesPage form {
+    width: 360px;
+    display: flex;
+    gap: 10px;
+}
+
+.profilesPage form input[type="text"] {
+    width: 100%;
+    outline: none;
+    border: 1px solid #525151;
+    border-radius: 4px;
+    padding: 4px 10px;
+}
+
+.profilesPage form input[type="submit"] {
+    font-size: 1rem;
+    background-color: #525151;
+    color: #fcfcfc;
+    padding: 4px 20px;
+    border: none;
+    outline: none;
+    border-radius: 4px;
+}
+
+.profilesPage form input[type="text"]:focus {
+    border: 4px solid #525151;
+}
+
+.profilesPage .profile {
+    width: auto;
+    display: flex;
+    height: auto;
+    margin-top: 50px;
+    gap: 20px;
+}
+
+.profilesPage .profile .image .img {
+    width: 200px;
+    height: auto;
+    border-radius: 10px;
+}
+
+.profilesPage .profile table tr th,
+.profilesPage .profile table tr td {
+    padding: 4px 20px;
+}
