@@ -191,8 +191,6 @@ def send_worker_profiles():
         if holiday['date'] == today_date:
             isHolidayToday = {'status': 'Holiday', 'holiday_title': holiday['holiday_title'], "isHoliday": True}
 
-    print("isHolidayToday", isHolidayToday)
-
     if (not (isHolidayToday['isHoliday'])):
         # Fetch all workers from the collection
         workers = workersCollection.find({})
@@ -236,12 +234,66 @@ trigger = CronTrigger(hour=18, minute=0)  # 6 PM
 scheduler.add_job(send_worker_profiles, trigger)
 scheduler.start()
 
-def test():
-    print("testing scheduler")
+def send_holiday_message_to_worker():
+    # To check to day is a holiday or not
+    current_datetime = datetime.now()
+    today_date = current_datetime.date()
+    weekday = today_date.weekday()  # Monday is 0, Sunday is 6
+    isHolidayToday = {'title': 'Not a Holiday', "isHoliday": False, "isWeekend": False, "isPublicHoliday": False}
+
+    if weekday >= 5:  # 5 and 6 represent Saturday and Sunday respectively
+        isHolidayToday['isWeekend'] = True
+        isHolidayToday['isHoliday'] = True
+        isHolidayToday['isPublicHoliday'] = False
+        isHolidayToday['title'] = "Weekend"
+
+    for holiday in holidays_data:
+        if holiday['date'] == today_date:
+            isHolidayToday['isWeekend'] = False
+            isHolidayToday['isHoliday'] = True
+            isHolidayToday['isPublicHoliday'] = True
+            isHolidayToday['title'] = holiday['holiday_title']
+
+    if (isHolidayToday['isHoliday']):
+        # Fetch all workers from the collection
+        workers = workersCollection.find({})
+
+        for worker in workers:
+            # Extract mobile number and details from worker
+            mobile = worker.get('mobile')
+            name = worker.get('name')
+
+            # Construct the message
+            if (isHolidayToday['isHoliday'] and isHolidayToday['isWeekend'] and isHolidayToday['isPublicHoliday']):
+                message_body = (
+                    f"Hello {name}, Today declared as a Holiday. Today is a weekend. Not only that, Today is a {isHolidayToday['title']},\nWe wishes Happy {isHolidayToday['title']}"
+                )
+
+            elif (isHolidayToday['isHoliday'] and isHolidayToday['isWeekend'] and (not isHolidayToday['isPublicHoliday'])):
+                message_body = (
+                    f"Hello {name}, Due to weekend, today declared as a Holiday."
+                )
+            
+            elif (isHolidayToday['isHoliday'] and (not isHolidayToday['isWeekend']) and isHolidayToday['isPublicHoliday']):
+                message_body = (
+                    f"Hello {name}, Today declared as a Holiday.\nWe Wishes Happy {isHolidayToday['title']}"
+                )
+
+            if mobile:
+                try:
+                    # Send the message using Twilio
+                    message = messenger_client.messages.create(
+                        from_=twilio_mobile_number,
+                        body=message_body,
+                        to="+91" + str(mobile)
+                    )
+                    print(f"Message sent successfully to {name}: SID {message.sid}")
+                except TwilioRestException as e:
+                    print(f"Failed to send message to {name}: {e}")
 
 scheduler = BackgroundScheduler()
-trigger = CronTrigger(hour=13, minute=39)  # 6 PM
-scheduler.add_job(test, trigger)
+trigger = CronTrigger(hour=0, minute=0)  # 4 AM
+scheduler.add_job(send_holiday_message_to_worker, trigger)
 scheduler.start()
 
 
