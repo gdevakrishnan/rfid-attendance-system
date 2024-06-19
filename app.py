@@ -274,10 +274,22 @@ def calculate_token():
             isHolidayToday = {"isHoliday": True}
 
     if (not (isHolidayToday['isHoliday'])):     # don't reduce token during holidays
+
         current_datetime = datetime.now()
         today_date = str(current_datetime.date())
         cursor = workersCollection.find({})
+
         for worker in cursor:
+            # Check if today is the 1st day of the month
+            if today_date.day == 1:
+                # Reset token based on salary
+                salary = float(worker['salary'])
+                new_token = round(salary / 10)
+                workersCollection.update_one(
+                    {"_id": worker["_id"]},
+                    {"$set": {"token": new_token}}
+                )
+
             attendanceCursor = attendanceCollection.find({"name": worker['name'], "rfid_id": worker['rfid_id'], "date": today_date})
 
             delay = 0
@@ -393,6 +405,11 @@ scheduler = BackgroundScheduler()
 trigger = CronTrigger(hour=19, minute=0)  # 7PM
 scheduler.add_job(send_worker_profiles, trigger)
 scheduler.start()
+
+##############################################################################
+
+# To reset the token of an employee for every month
+
 
 ##############################################################################
 
