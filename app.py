@@ -67,7 +67,9 @@ def add_worker():
     job_role = data.get('role')
     working_hours = data.get('workingHours')
     salary = data.get('salary')
-    token = round(((float(salary) / 27) / float(working_hours)) / 10)
+
+    token = round(float(salary) / 10)   # token generation
+
     try:
         cursor = workersCollection.insert_one({ 
             "name": name,
@@ -190,7 +192,7 @@ def presenceOfWorker(name, rfid_id, date):
         return True
 ##############################################################################
 
-# To send message to an employess about holidays at 4am
+# To send message to an employess about holidays at 6am
 def send_holiday_message_to_worker():
     # To check to day is a holiday or not
     current_datetime = datetime.now()
@@ -250,7 +252,7 @@ def send_holiday_message_to_worker():
 
 # Schedule to send the message at 4am. To inform today office is a holiday or not
 scheduler = BackgroundScheduler()
-trigger = CronTrigger(hour=4, minute=0)  # 4AM
+trigger = CronTrigger(hour=6, minute=0)  # 6AM
 scheduler.add_job(send_holiday_message_to_worker, trigger)
 scheduler.start()
 
@@ -258,10 +260,77 @@ scheduler.start()
 
 # Schedule to update the token of an employee at 6pm
 def calculate_token():
-    print("Calculate Token")
+    # To check to day is a holiday or not
+    current_datetime = datetime.now()
+    today_date = current_datetime.date()
+    weekday = today_date.weekday()  # Monday is 0, Sunday is 6
+    isHolidayToday = {"isHoliday": False}
+
+    if weekday >= 5:  # 5 and 6 represent Saturday and Sunday respectively
+        isHolidayToday = {"isHoliday": True}
+
+    for holiday in holidays_data:
+        if holiday['date'] == today_date:
+            isHolidayToday = {"isHoliday": True}
+
+    if (not (isHolidayToday['isHoliday'])):     # don't reduce token during holidays
+        current_datetime = datetime.now()
+        today_date = str(current_datetime.date())
+        cursor = workersCollection.find({})
+        for worker in cursor:
+            attendanceCursor = attendanceCollection.find({"name": worker['name'], "rfid_id": worker['rfid_id'], "date": today_date})
+
+            delay = 0
+            previous_entry = None
+            onLeave = True
+
+            for attendance in attendanceCursor:
+                if (attendance['presence']):
+                    onLeave = False
+
+                if previous_entry and not attendance['presence'] and previous_entry['presence']:
+                    in_time = datetime.strptime(previous_entry['time'], '%H:%M:%S')
+                    out_time = datetime.strptime(attendance['time'], '%H:%M:%S')
+                    time_difference = out_time - in_time
+                    minutes_difference = time_difference.total_seconds() / 60
+                    delay += minutes_difference
+
+                previous_entry = attendance
+
+
+            if onLeave:
+                delay = float(worker['working_hours']) * 60
+            
+            lost_token = 0
+            if (delay > 10):
+                lost_token = round(float(delay) / 10)
+
+            if (lost_token > 0):
+                # Update worker's token with lost_token
+                updated_token = worker['token'] - lost_token
+                workersCollection.update_one(
+                    {"_id": worker["_id"]},
+                    {"$set": {"token": updated_token}}
+                )
+
+                message_body = (
+                    f"Hello {worker['name']}, You lost {lost_token} tokens from your tokens"
+                )
+
+                if worker['mobile']:
+                    try:
+                        # Send the message using Twilio
+                        message = messenger_client.messages.create(
+                            from_=twilio_mobile_number,
+                            body=message_body,
+                            to="+91" + str(worker['mobile'])
+                        )
+                        print(f"Message sent successfully to {worker['name']}: SID {message.sid}")
+                    except TwilioRestException as e:
+                        print(f"Failed to send message to {worker['name']}: {e}")
 
 scheduler = BackgroundScheduler()
-trigger = CronTrigger(hour=4, minute=0)  # 4 AM
+trigger = CronTrigger(hour=18, minute=0)  # 6PM
 scheduler.add_job(calculate_token, trigger)
 scheduler.start()
 
@@ -321,7 +390,7 @@ def send_worker_profiles():
 
 # Schedule the task to run daily at 6 PM to send the daily reports
 scheduler = BackgroundScheduler()
-trigger = CronTrigger(hour=19, minute=0)  # 7 PM
+trigger = CronTrigger(hour=19, minute=0)  # 7PM
 scheduler.add_job(send_worker_profiles, trigger)
 scheduler.start()
 
