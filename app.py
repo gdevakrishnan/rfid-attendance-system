@@ -12,7 +12,7 @@ from apscheduler.triggers.cron import CronTrigger
 import json
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app)
 load_dotenv()
 
 # DB connection
@@ -228,7 +228,7 @@ def send_worker_profiles():
                 except TwilioRestException as e:
                     print(f"Failed to send message to {name}: {e}")
 
-# Schedule the task to run daily at 6 PM
+# Schedule the task to run daily at 6 PM to send the daily reports
 scheduler = BackgroundScheduler()
 trigger = CronTrigger(hour=18, minute=0)  # 6 PM
 scheduler.add_job(send_worker_profiles, trigger)
@@ -291,8 +291,9 @@ def send_holiday_message_to_worker():
                 except TwilioRestException as e:
                     print(f"Failed to send message to {name}: {e}")
 
+# Schedule to send the message at 4am. To inform today office is a holiday or not
 scheduler = BackgroundScheduler()
-trigger = CronTrigger(hour=0, minute=0)  # 4 AM
+trigger = CronTrigger(hour=4, minute=0)  # 4 AM
 scheduler.add_job(send_holiday_message_to_worker, trigger)
 scheduler.start()
 
