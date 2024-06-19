@@ -9,6 +9,7 @@ from twilio.base.exceptions import TwilioRestException
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
+import json
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -33,6 +34,10 @@ twilio_sid = os.getenv("TWILIO_SID")
 twilio_auth_token = os.getenv("TWILIO_AUTH_TOKEN")
 
 messenger_client = Client(twilio_sid, twilio_auth_token)
+
+# Load public holidays data from JSON file
+with open('public_holidays.json', 'r') as f:
+    holidays_data = json.load(f)
 
 # To get all attendance
 @app.route('/', methods=['GET'])
@@ -173,47 +178,72 @@ def presenceOfWorker(name, rfid_id, date):
         return True
 
 def send_worker_profiles():
-    # Fetch all workers from the collection
-    workers = workersCollection.find({})
+    # To check to day is a holiday or not
+    current_datetime = datetime.now()
+    today_date = current_datetime.date()
+    weekday = today_date.weekday()  # Monday is 0, Sunday is 6
+    isHolidayToday = {'status': 'Not a Holiday', "isHoliday": False}
 
-    for worker in workers:
-        # Extract mobile number and details from worker
-        mobile = worker.get('mobile')
-        name = worker.get('name')
-        age = worker.get('age')
-        role = worker.get('role')
-        working_hours = worker.get('working_hours')
-        salary = worker.get('salary')
-        token = worker.get('token')
+    if weekday >= 5:  # 5 and 6 represent Saturday and Sunday respectively
+        isHolidayToday = {'status': 'Weekend', "isHoliday": True}
 
-        # Construct the message
-        message_body = (
-            f"Profile for {name}:\n"
-            f"Name: {name}\n"
-            f"Age: {age}\n"
-            f"Role: {role}\n"
-            f"Working Hours: {working_hours}\n"
-            f"Salary: {salary}"
-            f"Token: {token}"
-        )
+    for holiday in holidays_data:
+        if holiday['date'] == today_date:
+            isHolidayToday = {'status': 'Holiday', 'holiday_title': holiday['holiday_title'], "isHoliday": True}
 
-        if mobile:
-            try:
-                # Send the message using Twilio
-                message = messenger_client.messages.create(
-                    from_=twilio_mobile_number,
-                    body=message_body,
-                    to="+91" + str(mobile)
-                )
-                print(f"Message sent successfully to {name}: SID {message.sid}")
-            except TwilioRestException as e:
-                print(f"Failed to send message to {name}: {e}")
+    print("isHolidayToday", isHolidayToday)
+
+    if (not (isHolidayToday['isHoliday'])):
+        # Fetch all workers from the collection
+        workers = workersCollection.find({})
+
+        for worker in workers:
+            # Extract mobile number and details from worker
+            mobile = worker.get('mobile')
+            name = worker.get('name')
+            age = worker.get('age')
+            role = worker.get('role')
+            working_hours = worker.get('working_hours')
+            salary = worker.get('salary')
+            token = worker.get('token')
+
+            # Construct the message
+            message_body = (
+                f"Profile for {name}:\n"
+                f"Name: {name}\n"
+                f"Age: {age}\n"
+                f"Role: {role}\n"
+                f"Working Hours: {working_hours}\n"
+                f"Salary: {salary}\n"
+                f"Token: {token}"
+            )
+
+            if mobile:
+                try:
+                    # Send the message using Twilio
+                    message = messenger_client.messages.create(
+                        from_=twilio_mobile_number,
+                        body=message_body,
+                        to="+91" + str(mobile)
+                    )
+                    print(f"Message sent successfully to {name}: SID {message.sid}")
+                except TwilioRestException as e:
+                    print(f"Failed to send message to {name}: {e}")
 
 # Schedule the task to run daily at 6 PM
 scheduler = BackgroundScheduler()
 trigger = CronTrigger(hour=18, minute=0)  # 6 PM
 scheduler.add_job(send_worker_profiles, trigger)
 scheduler.start()
+
+def test():
+    print("testing scheduler")
+
+scheduler = BackgroundScheduler()
+trigger = CronTrigger(hour=13, minute=39)  # 6 PM
+scheduler.add_job(test, trigger)
+scheduler.start()
+
 
 if __name__ == '__main__':
     app.run(debug=True)
