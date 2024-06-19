@@ -68,7 +68,7 @@ def add_worker():
     working_hours = data.get('workingHours')
     salary = data.get('salary')
 
-    token = round(float(salary) / 10)   # token generation
+    token = round((float(salary) / 30) / 10)   # token generation
 
     try:
         cursor = workersCollection.insert_one({ 
@@ -284,7 +284,7 @@ def calculate_token():
             if today_date.day == 1:
                 # Reset token based on salary
                 salary = float(worker['salary'])
-                new_token = round(salary / 10)
+                new_token = round((salary / 30) / 10)
                 workersCollection.update_one(
                     {"_id": worker["_id"]},
                     {"$set": {"token": new_token}}
