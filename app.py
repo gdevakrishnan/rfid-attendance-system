@@ -7,6 +7,8 @@ import os
 from twilio.rest import Client
 from twilio.base.exceptions import TwilioRestException
 from flask_cors import CORS
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -125,8 +127,6 @@ def put_attendance(data):
     firstTime = firstTimeAttendance(data['name'], data['rfid_id'], date_str)
     presence = presenceOfWorker(data['name'], data['rfid_id'], date_str)
 
-    print("presence", presence)
-
     cursor = attendanceCollection.insert_one({ 
         "name": data['name'],
         "rfid_id": (data['rfid_id']),
@@ -164,17 +164,56 @@ def firstTimeAttendance(name, rfid_id, date):
 
 # TO find the worker is in or out of work
 def presenceOfWorker(name, rfid_id, date):
-    print({"rfid_id": rfid_id, "name": name, "date": date})
     cursor = list(attendanceCollection.find({"rfid_id": rfid_id, "name": name, "date": date}))        
-    print("length ", len(cursor))
-    print(str(cursor))
     if (len(cursor) > 0):
         for element in cursor:
             if (cursor.index(element) == len(cursor) - 1):
-                print('hi')
                 return (not (element['presence']))
     else:
         return True
+
+def send_worker_profiles():
+    # Fetch all workers from the collection
+    workers = workersCollection.find({})
+
+    for worker in workers:
+        # Extract mobile number and details from worker
+        mobile = worker.get('mobile')
+        name = worker.get('name')
+        age = worker.get('age')
+        role = worker.get('role')
+        working_hours = worker.get('working_hours')
+        salary = worker.get('salary')
+        token = worker.get('token')
+
+        # Construct the message
+        message_body = (
+            f"Profile for {name}:\n"
+            f"Name: {name}\n"
+            f"Age: {age}\n"
+            f"Role: {role}\n"
+            f"Working Hours: {working_hours}\n"
+            f"Salary: {salary}"
+            f"Token: {token}"
+        )
+
+        if mobile:
+            try:
+                # Send the message using Twilio
+                message = messenger_client.messages.create(
+                    from_=twilio_mobile_number,
+                    body=message_body,
+                    to="+91" + str(mobile)
+                )
+                print(f"Message sent successfully to {name}: SID {message.sid}")
+            except TwilioRestException as e:
+                print(f"Failed to send message to {name}: {e}")
+
+# Schedule the task to run daily at 6 PM
+scheduler = BackgroundScheduler()
+trigger = CronTrigger(hour=18, minute=0)  # 6 PM
+scheduler.add_job(send_worker_profiles, trigger)
+scheduler.start()
 
 if __name__ == '__main__':
     app.run(debug=True)
