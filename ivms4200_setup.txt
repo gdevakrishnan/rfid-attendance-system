@@ -1,0 +1,3 @@
+IVMS-4200 software setup
+
+Access Device Configuration => Navigate to API Settings => Configure API URL and Parameters => Trigger events

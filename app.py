@@ -392,7 +392,7 @@ def send_worker_profiles():
             mobile = worker.get('mobile')
             name = worker.get('name')
             age = worker.get('age')
-            role = worker.get('role')
+            role = worker.get('job_role')
             working_hours = worker.get('working_hours')
             salary = worker.get('salary')
             final_salary = worker.get('salary')
