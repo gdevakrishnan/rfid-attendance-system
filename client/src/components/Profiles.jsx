@@ -81,8 +81,12 @@ function Profiles() {
                                                 <td>{ profile.working_hours } hours</td>
                                             </tr>
                                             <tr>
-                                                <th>Salary</th>
+                                                <th>Original Salary</th>
                                                 <td>Rs.{ profile.salary }</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Salary</th>
+                                                <td>Rs.{ profile.final_salary }</td>
                                             </tr>
                                             <tr>
                                                 <th>Token</th>

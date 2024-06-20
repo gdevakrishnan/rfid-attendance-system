@@ -1,7 +1,7 @@
 # Packages
 from flask import Flask, jsonify, request
 from pymongo import MongoClient
-from datetime import datetime
+from datetime import datetime, time, timedelta
 from dotenv import load_dotenv
 import os
 from twilio.rest import Client
@@ -67,8 +67,9 @@ def add_worker():
     job_role = data.get('role')
     working_hours = data.get('workingHours')
     salary = data.get('salary')
+    final_salary = data.get('salary')
 
-    token = round((float(salary) / 30) / 10)   # token generation
+    token = round((((float(salary) / 30) / 60) * 30) / 10)   # token generation
 
     try:
         cursor = workersCollection.insert_one({ 
@@ -79,6 +80,7 @@ def add_worker():
             "job_role": job_role,
             "working_hours": (working_hours),
             "salary": (salary),
+            "final_salary": (final_salary),
             "token": (token)
          });
         
@@ -150,6 +152,7 @@ def put_attendance(data):
         "job_role": data['job_role'],
         "working_hours": (data['working_hours']),
         "salary": (data['salary']),
+        "final_salary": (data['final_salary']),
         "token": data['token'],
         "date": date_str,
         "time": time_str,
@@ -287,7 +290,7 @@ def calculate_token():
                 new_token = round((salary / 30) / 10)
                 workersCollection.update_one(
                     {"_id": worker["_id"]},
-                    {"$set": {"token": new_token}}
+                    {"$set": {"token": new_token, "final_salary": worker['salary']}}    # Re-initialize the token and salary
                 )
 
             attendanceCursor = attendanceCollection.find({"name": worker['name'], "rfid_id": worker['rfid_id'], "date": today_date})
@@ -303,9 +306,18 @@ def calculate_token():
                 if previous_entry and not attendance['presence'] and previous_entry['presence']:
                     in_time = datetime.strptime(previous_entry['time'], '%H:%M:%S')
                     out_time = datetime.strptime(attendance['time'], '%H:%M:%S')
+
+                    # Ensure out_time is before 5 PM (17:00)
+                    if out_time.time() > time(hour=17):
+                        out_time = out_time.replace(hour=17, minute=0, second=0)  # Set out_time to 17:00
+
+                    if out_time < in_time:
+                        # Adjust out_time to the next day if it's earlier than in_time (possibly due to crossing midnight)
+                        out_time += timedelta(days=1)
+
                     time_difference = out_time - in_time
                     minutes_difference = time_difference.total_seconds() / 60
-                    delay += minutes_difference
+                    delay += max(0, minutes_difference)  # Ensure delay is non-negative
 
                 previous_entry = attendance
 
@@ -320,9 +332,10 @@ def calculate_token():
             if (lost_token > 0):
                 # Update worker's token with lost_token
                 updated_token = worker['token'] - lost_token
+                reduced_salary = (((((float(worker['working_hour']) * 60) * 30) / 10) - float(updated_token)) * 10) * (((float(worker['salary']) / 30) / 9) / 60)
                 workersCollection.update_one(
                     {"_id": worker["_id"]},
-                    {"$set": {"token": updated_token}}
+                    {"$set": {"token": updated_token, "final_salary": reduced_salary}}  # update the token and salary after reduction
                 )
 
                 message_body = (
@@ -375,6 +388,7 @@ def send_worker_profiles():
             role = worker.get('role')
             working_hours = worker.get('working_hours')
             salary = worker.get('salary')
+            final_salary = worker.get('salary')
             token = worker.get('token')
 
             # Construct the message
@@ -385,6 +399,7 @@ def send_worker_profiles():
                 f"Role: {role}\n"
                 f"Working Hours: {working_hours}\n"
                 f"Salary: {salary}\n"
+                f"Reduced Salary: {final_salary}\n"
                 f"Token: {token}"
             )
 

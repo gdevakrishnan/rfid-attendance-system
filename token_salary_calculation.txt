@@ -1,0 +1,13 @@
+For example the salary is Rs.80,000
+salary per month = 80000
+salary per Day = 80000 / 30 = 2667
+salary per hour = 2667 / 9 = 296
+salary per minute = 296 / 60 = 4
+salary per 10 min = 4 * 10 = 40
+
+
+cost_per_token = ((((salary / 30) / working_hours) / 60) * 10)
+token = ((working_hour * 60) * 30) / 10
+
+reduced_salary = (((((working_hour * 60) * 30) / 10) - token) * 10) * (((salary / 30) / 9) / 60)
+salary = salary - reduced_salary
