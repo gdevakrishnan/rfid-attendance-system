@@ -1,3 +1,8 @@
 IVMS-4200 software setup
 
 Access Device Configuration => Navigate to API Settings => Configure API URL and Parameters => Trigger events
+
+At Configure API URL and Parameters
+    Here you can give the attendance end-point url "BASE_URL/attendance"
+
+And trigger the url to get attendance

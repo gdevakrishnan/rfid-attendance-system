@@ -1,6 +1,7 @@
 import React, { Fragment, useContext, useState } from 'react'
 import appContext from '../context/appContext';
 import { findWorker } from '../services/serviceWorker';
+import Profile from '../assets/profile.png'
 
 function Profiles() {
     const { setMsg } = useContext(appContext);
@@ -51,7 +52,7 @@ function Profiles() {
                         (profile) ? (
                             <Fragment>
                                 <div className="image">
-                                    <img src="https://images.pexels.com/photos/3785077/pexels-photo-3785077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1" alt="profile" className="img" />
+                                    <img src={Profile} alt="profile" className="img" />
                                 </div>
                                 <div className="details">
                                     <table>
