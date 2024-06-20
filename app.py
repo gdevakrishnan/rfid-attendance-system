@@ -299,23 +299,30 @@ def calculate_token():
             previous_entry = None
             onLeave = True
 
+            lunch_break_start = time(12, 0)  # 12:00 PM
+            lunch_break_end = time(13, 0)    # 1:00 PM
+
             for attendance in attendanceCursor:
-                if (attendance['presence']):
+                if attendance['presence']:
                     onLeave = False
 
                 if previous_entry and not attendance['presence'] and previous_entry['presence']:
-                    in_time = datetime.strptime(previous_entry['time'], '%H:%M:%S')
-                    out_time = datetime.strptime(attendance['time'], '%H:%M:%S')
+                    in_time = datetime.strptime(previous_entry['time'], '%H:%M:%S').time()
+                    out_time = datetime.strptime(attendance['time'], '%H:%M:%S').time()
+
+                    # Check if in_time or out_time is within the lunch break period
+                    if lunch_break_start <= in_time <= lunch_break_end or lunch_break_start <= out_time <= lunch_break_end:
+                        continue  # Skip this entry as it's during lunch break
 
                     # Ensure out_time is before 5 PM (17:00)
-                    if out_time.time() > time(hour=17):
-                        out_time = out_time.replace(hour=17, minute=0, second=0)  # Set out_time to 17:00
+                    if out_time > time(hour=17):
+                        out_time = time(hour=17, minute=0, second=0)  # Set out_time to 17:00
 
                     if out_time < in_time:
                         # Adjust out_time to the next day if it's earlier than in_time (possibly due to crossing midnight)
                         out_time += timedelta(days=1)
 
-                    time_difference = out_time - in_time
+                    time_difference = datetime.combine(datetime.today(), out_time) - datetime.combine(datetime.today(), in_time)
                     minutes_difference = time_difference.total_seconds() / 60
                     delay += max(0, minutes_difference)  # Ensure delay is non-negative
 
