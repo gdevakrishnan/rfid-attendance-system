@@ -7,6 +7,8 @@ import Message from '../components/Message';
 import Footer from '../components/Footer';
 import Profiles from '../components/Profiles';
 import Add from '../components/Add';
+import Login from '../components/Login';
+import Signup from '../components/Signup';
 
 function Router() {
   return (
@@ -19,6 +21,8 @@ function Router() {
                 <Route path='/add' element={<Add />}/>
                 <Route path='/attendance' element={<Attendance />}/>
                 <Route path='/profiles' element={<Profiles />}/>
+                <Route path='/login' element={<Login />}/>
+                <Route path='/signup' element={<Signup />}/>
             </Routes>
             <Outlet />
             <Footer />

@@ -9,11 +9,21 @@ from twilio.base.exceptions import TwilioRestException
 from flask_cors import CORS
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
+import base64
+from cryptography.fernet import Fernet, InvalidToken
 import json
 
 app = Flask(__name__)
 CORS(app)
 load_dotenv()
+
+# JWT
+# Example encrypted token
+encrypted_token = b'gAAAAABcrlX....<truncated_for_brevity>....'
+
+# Example key (ensure this matches the key used for encryption)
+ret_key = "smPJpKz8nsqSFjW6lhfUuSGqrQHhwR8lAl_ChnB_V0s="
+cipher_suite = Fernet(ret_key.encode())
 
 # DB connection
 mongo_uri = os.getenv("MONGODB_URI")
@@ -23,6 +33,7 @@ try:
     db = mongo_client['Deploy']
     workersCollection = db['workers']
     attendanceCollection = db['attendance']
+    userCollection = db['user']
     print("Connected to MongoDB successfully!")
 except Exception as e:
     print(f"Error connecting to MongoDB: {e}")
@@ -53,6 +64,40 @@ def get_attendance_data():
     
     # Return the data as JSON
     return jsonify(attendance_data)
+
+##############################################################################
+
+# User Authentication Register
+@app.route('/signup', methods=['POST'])
+def signup():
+    # Extract data from JSON request
+    data = request.json
+    name = data.get('name')
+    email = data.get('gmail')
+    password = data.get('pwd')
+
+    # Check if user already exists
+    existing_user = userCollection.find_one({'name': name, 'email': email})
+
+    print(existing_user)
+
+    if existing_user:
+        return jsonify({'message': 'User with this name and email already exists!'}), 200
+
+    # Store user data in MongoDB
+    user_data = {
+        'name': name,
+        'email': email,
+        'password': password,
+        'type': 'staff'
+    }
+
+    try:
+        userCollection.insert_one(user_data)
+        return jsonify({'message': 'User signed up successfully!'}), 200
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
+
 
 ##############################################################################
 

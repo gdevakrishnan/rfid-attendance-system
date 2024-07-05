@@ -21,6 +21,12 @@ function Navbar() {
           <li>
             <Link to={'/profiles'}>Profiles</Link>
           </li>
+          <li>
+            <Link to={'/login'}>Login</Link>
+          </li>
+          <li>
+            <Link to={'/signup'}>Signup</Link>
+          </li>
         </ul>
       </nav>
     </Fragment>

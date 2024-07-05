@@ -1,10 +1,22 @@
 import axios from 'axios';
-const BASE_URL = "http://127.0.0.1:5000";
+const BASE_URL = "http://localhost:5000";
 
 // To get all the attenance data
 export const getAttendaceData = async () => {
     try {
         const task = await axios.get(`${BASE_URL}/`);
+        const response = {"status": true, data: task.data};
+        return response;
+    }   catch (e) {
+        const response = {"status": false, data: e.message};
+        return response;
+    }
+}
+
+// User Authentication Signup
+export const userRegisteration = async (formData) => {
+    try {
+        const task = await axios.post(`${BASE_URL}/signup`, formData);
         const response = {"status": true, data: task.data};
         return response;
     }   catch (e) {
