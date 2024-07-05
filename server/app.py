@@ -98,6 +98,25 @@ def signup():
     except Exception as e:
         return jsonify({'error': str(e)}), 500
 
+##############################################################################
+
+@app.route('/login', methods=['POST'])
+def login():
+    # Extract data from JSON request
+    data = request.json
+    name = data.get('name')
+    email = data.get('gmail')
+    password = data.get('pwd')
+
+    # Check if user already exists
+    existing_user = userCollection.find_one({'name': name, 'email': email})
+    if (password != existing_user["password"]):
+        return jsonify({'message': 'password mismatch', "login": False}), 200
+
+    if existing_user:
+        return jsonify({'message': 'User login successfully!', "user_data": [{"name": existing_user["name"], "gmail": existing_user["email"], "type": existing_user["type"]}], "login": True}), 200
+    else:
+        return jsonify({'message': 'User not registered!', "login": False}), 200
 
 ##############################################################################
 

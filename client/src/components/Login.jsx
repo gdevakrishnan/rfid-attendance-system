@@ -1,7 +1,15 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useContext, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { userLogin } from '../services/serviceWorker';
+import appContext from '../context/appContext';
 
 function Login() {
+    const {
+        setMsg,
+        setEmployeeUsername,
+        setEmployeeGmail,
+        setEmployeeType
+    } = useContext(appContext)
     const initialState = {
         "name": "",
         "gmail": "",
@@ -12,7 +20,17 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        console.log(formData);
+        userLogin(formData)
+            .then((response) => {
+                setEmployeeUsername(response.data.user_data[0].name);
+                setEmployeeGmail(response.data.user_data[0].gmail);
+                setEmployeeType(response.data.user_data[0].type);
+                setMsg(response.data.message);
+                setTimeout(() => {
+                    setMsg("");
+                }, 2000);
+            })
+            .catch((e) => console.log(e.message));
     }
 
     return (

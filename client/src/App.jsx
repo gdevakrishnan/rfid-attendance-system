@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
+import React, { Fragment, useContext, useEffect, useState } from 'react'
 import { getAttendaceData } from './services/serviceWorker';
 import appContext from './context/appContext';
 import Router from './router/Router';
@@ -6,6 +6,9 @@ import Router from './router/Router';
 function App() {
   const [msg, setMsg] = useState("");
   const [attendance, setAttendance] = useState([]);
+  const [employeeUsername, setEmployeeUsername] = useState(null);
+  const [employeeGmail, setEmployeeGmail] = useState(null);
+  const [employeeType, setEmployeeType] = useState(null);
   useEffect(() => {
     getAttendaceData().then((response) => {
       if (response.status) {
@@ -18,7 +21,13 @@ function App() {
     attendance,
     setAttendance,
     msg,
-    setMsg
+    setMsg,
+    employeeUsername,
+    setEmployeeUsername,
+    employeeGmail,
+    setEmployeeGmail,
+    employeeType, 
+    setEmployeeType
   }
 
   return (

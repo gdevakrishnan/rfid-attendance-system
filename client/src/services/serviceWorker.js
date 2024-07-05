@@ -25,6 +25,18 @@ export const userRegisteration = async (formData) => {
     }
 }
 
+// User Login
+export const userLogin = async (formData) => {
+    try {
+        const task = await axios.post(`${BASE_URL}/login`, formData);
+        const response = {"status": true, data: task.data};
+        return response;
+    }   catch (e) {
+        const response = {"status": false, data: e.message};
+        return response;
+    }
+}
+
 // To insert an attendance to the db
 export const putAttendance = async (worker) => {
     try {
