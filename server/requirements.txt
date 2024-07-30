@@ -4,3 +4,4 @@ python-dotenv
 twilio
 Flask-Cors
 APScheduler
+gunicorn==19.7.1
