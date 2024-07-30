@@ -9,6 +9,8 @@ function App() {
   const [employeeUsername, setEmployeeUsername] = useState(null);
   const [employeeGmail, setEmployeeGmail] = useState(null);
   const [employeeType, setEmployeeType] = useState(null);
+  const [employeeRfid, setEmployeeRfid] = useState(null);
+
   useEffect(() => {
     getAttendaceData().then((response) => {
       if (response.status) {
@@ -23,11 +25,13 @@ function App() {
     msg,
     setMsg,
     employeeUsername,
-    setEmployeeUsername,
     employeeGmail,
-    setEmployeeGmail,
     employeeType, 
-    setEmployeeType
+    employeeRfid, 
+    setEmployeeUsername,
+    setEmployeeGmail,
+    setEmployeeType,
+    setEmployeeRfid
   }
 
   return (

@@ -74,12 +74,11 @@ def signup():
     data = request.json
     name = data.get('name')
     email = data.get('gmail')
+    rfid_id = data.get('rfid_id')
     password = data.get('pwd')
 
     # Check if user already exists
     existing_user = userCollection.find_one({'name': name, 'email': email})
-
-    print(existing_user)
 
     if existing_user:
         return jsonify({'message': 'User with this name and email already exists!'}), 200
@@ -89,6 +88,7 @@ def signup():
         'name': name,
         'email': email,
         'password': password,
+        'rfid_id': rfid_id,
         'type': 'staff'
     }
 
@@ -114,7 +114,7 @@ def login():
         return jsonify({'message': 'password mismatch', "login": False}), 200
 
     if existing_user:
-        return jsonify({'message': 'User login successfully!', "user_data": [{"name": existing_user["name"], "gmail": existing_user["email"], "type": existing_user["type"]}], "login": True}), 200
+        return jsonify({'message': 'User login successfully!', "user_data": [{"name": existing_user["name"], "gmail": existing_user["email"], "rfid_id": existing_user["rfid_id"], "type": existing_user["type"]}], "login": True}), 200
     else:
         return jsonify({'message': 'User not registered!', "login": False}), 200
 

@@ -1,12 +1,27 @@
 import React, { Fragment, useContext } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import appContext from '../context/appContext'
 
 function Navbar() {
   const {
     employeeType,
-    employeeUsername
+    employeeUsername,
+    setEmployeeUsername,
+    setEmployeeGmail,
+    setEmployeeType,
+    setEmployeeRfid
   } = useContext(appContext);
+
+  const nav = useNavigate();
+
+  const handleLogout = (e) => {
+    e.preventDefault();
+    setEmployeeUsername(null);
+    setEmployeeGmail(null);
+    setEmployeeType(null);
+    setEmployeeRfid(null);
+    nav('/');
+  }
 
   return (
     <Fragment>
@@ -18,14 +33,14 @@ function Navbar() {
           <li>
             <Link to={'/'}>Home</Link>
           </li>
-          <li>
-            <Link to={'/attendance'}>Attendance</Link>
-          </li>
           {
             (employeeType && employeeType == "admin") ? (
               <Fragment>
                 <li>
                   <Link to={'/add'}>Add</Link>
+                </li>
+                <li>
+                  <Link to={'/find'}>Find</Link>
                 </li>
               </Fragment>
             ) : null
@@ -34,7 +49,13 @@ function Navbar() {
             (employeeUsername && employeeUsername.trim() != "") ? (
               <Fragment>
                 <li>
-                  <Link to={'/profiles'}>{employeeUsername}</Link>
+                  <Link to={'/attendance'}>Attendance</Link>
+                </li>
+                <li>
+                  <Link to={'/profile'}>{employeeUsername}</Link>
+                </li>
+                <li>
+                  <button className='logout_btn' onClick={(e) => handleLogout(e)}>Logout</button>
                 </li>
               </Fragment>
             ) : (

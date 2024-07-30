@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { userRegisteration } from '../services/serviceWorker';
 import appContext from '../context/appContext'
 
@@ -8,14 +8,27 @@ function Signup() {
     const initialState = {
         "name": "",
         "gmail": "",
+        "rfid_id": "",
         "pwd": "",
         "cpwd": ""
     }
 
     const [formData, setFormData] = useState(initialState);
 
+    const nav = useNavigate();
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        for (const key in formData) {
+            if (formData[key] === "") {
+              setMsg("Enter all the fields");
+              setTimeout(() => {
+                setMsg("");
+              }, 4000);
+              return;
+            }
+          }
+
         userRegisteration(formData)
             .then((response) => {
                 console.log(response.data.message);
@@ -23,6 +36,7 @@ function Signup() {
                 setTimeout(() => {
                     setMsg("");
                 }, 2000);
+                nav('/login');
             })
             .catch((e) => console.log(e.message));
     }
@@ -48,6 +62,16 @@ function Signup() {
                             name="gmail"
                             id="gmail"
                             value={formData.gmail}
+                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                        />
+                    </div>
+                    <div className="form_group">
+                        <label htmlFor="rfid_id">RFID</label>
+                        <input
+                            type="number"
+                            name="rfid_id"
+                            id="rfid_id"
+                            value={formData.rfid_id}
                             onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
                         />
                     </div>

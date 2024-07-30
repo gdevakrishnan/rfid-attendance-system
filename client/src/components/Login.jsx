@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { userLogin } from '../services/serviceWorker';
 import appContext from '../context/appContext';
 
@@ -8,7 +8,8 @@ function Login() {
         setMsg,
         setEmployeeUsername,
         setEmployeeGmail,
-        setEmployeeType
+        setEmployeeType,
+        setEmployeeRfid
     } = useContext(appContext)
     const initialState = {
         "name": "",
@@ -17,18 +18,31 @@ function Login() {
     }
 
     const [formData, setFormData] = useState(initialState);
+    const nav = useNavigate();
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        for (const key in formData) {
+            if (formData[key] === "") {
+                setMsg("Enter all the fields");
+                setTimeout(() => {
+                    setMsg("");
+                }, 4000);
+                return;
+            }
+        }
+
         userLogin(formData)
             .then((response) => {
                 setEmployeeUsername(response.data.user_data[0].name);
                 setEmployeeGmail(response.data.user_data[0].gmail);
                 setEmployeeType(response.data.user_data[0].type);
+                setEmployeeRfid(response.data.user_data[0].rfid_id);
                 setMsg(response.data.message);
                 setTimeout(() => {
                     setMsg("");
                 }, 2000);
+                nav('/');
             })
             .catch((e) => console.log(e.message));
     }

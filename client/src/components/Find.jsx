@@ -3,7 +3,7 @@ import appContext from '../context/appContext';
 import { findWorker } from '../services/serviceWorker';
 import Profile from '../assets/profile.png'
 
-function Profiles() {
+function Find() {
     const { setMsg } = useContext(appContext);
     const initialState = {
         "rfid_id": ""
@@ -105,4 +105,4 @@ function Profiles() {
     )
 }
 
-export default Profiles
+export default Find

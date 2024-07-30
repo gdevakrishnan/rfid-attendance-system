@@ -63,7 +63,15 @@ body {
     border-bottom: 4px solid #FFFFFF;
 }
 
-.nav ul li a {
+.nav ul li .logout_btn {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+}
+
+.nav ul li a,
+.nav ul li .logout_btn {
     font-size: 16px;
     font-weight: normal;
     letter-spacing: 1px;

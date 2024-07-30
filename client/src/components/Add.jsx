@@ -29,6 +29,17 @@ function Add() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const check = processText(newPerson.name);
+
+    for (const key in newPerson) {
+      if (newPerson[key] === "") {
+        setMsg("Enter all the fields");
+        setTimeout(() => {
+          setMsg("");
+        }, 4000);
+        return;
+      }
+    }
+
     if (!check.hasSpecialCharacters) {
       setNewPerson({ ...newPerson, "name": check.processedText });
       addWorker(newPerson)
