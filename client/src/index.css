@@ -23,11 +23,11 @@ body {
 .page {
     min-height: 100vh;
     height: auto;
-    padding: 50px 0px;
+    padding: 6rem 0px 50px 0px;
 }
 
 /* Header Starts */
-.nav {
+/* .nav {
     height: 50px;
     width: 100%;
     background-color: #525151;
@@ -102,6 +102,7 @@ body {
     }
 
     .nav ul {
+        display: block;
         background-color: rgba(212, 212, 212);
         flex-direction: column;
         position: absolute;
@@ -111,7 +112,6 @@ body {
         height: auto;
         width: 40%;
         transition: all 1s ease-in-out;
-        /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
     }
 
     .nav .fa {
@@ -131,13 +131,15 @@ body {
         border-bottom: none;
     }
 
-    .nav ul li a {
+    .nav ul li a,
+    .nav ul li .logout_btn {
         color: rgb(43, 42, 42);
         font-size: 20px;
         letter-spacing: 0.8px;
     }
 
-    .nav ul li:hover a {
+    .nav ul li:hover a,
+    .nav ul li:hover .logout_btn {
         color: #FFFFFF;
     }
 }
@@ -146,9 +148,137 @@ body {
     .nav ul {
         width: 50%;
     }
-}
+} */
 
 /* Header Ends */
+
+/* Navbar */
+nav {
+    height: 60px;
+    width: 100%;
+    background-color: #525151;
+    position: fixed;
+    top: 0;
+    z-index: 9999;
+    left: 0;
+  }
+  
+  .logo {
+    width: auto;
+    float: left;
+    line-height: 60px;
+    margin: 0px 0px 0px 20px;
+    color: #fcfcfc;
+  }
+  
+  nav ul {
+    float: right;
+  }
+  
+  nav ul li {
+    display: inline-block;
+    line-height: 60px;
+  }
+
+  nav ul li .logout_btn {
+    background-color: transparent;
+    outline: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  nav ul li a,
+  nav ul li .logout_btn {
+    font-size: 1.1rem;
+    margin-right: 12px;
+    padding: 10px;
+    color: #fcfcfc;
+    font-weight: 400;
+    letter-spacing: 1.1px;
+  }
+  
+  nav ul li a:hover,
+  nav ul li .logout_btn:hover {
+    border-bottom: 2px solid #fcfcfc;
+  }
+  
+  .checkbtn {
+    color: #fcfcfc;
+    font-size: 30px;
+    float: right;
+    margin: 14px 20px 0px 20px;
+    cursor: pointer;
+    display: none;
+  }
+  
+  .overlay {
+    display: none;
+  }
+
+  #check {
+    display: none;
+  }
+  
+  @media screen and (max-width:972px) {
+    nav ul {
+      position: absolute;
+      height: auto;
+      width: 40%;
+      margin: 0px 0px;
+      top: 80px;
+      right: -40%;
+      text-align: center;
+      background-color: #525151;
+      transition: all 0.6s ease-out;
+      z-index: 1000;
+      box-shadow: inset 2px 2px 5px 1px var(--color2), inset -2px -2px 40px 1px var(--color2);
+      border-radius: 5px;
+      z-index: 2;
+    }
+  
+    nav ul li {
+      display: block;
+      line-height: 4rem;
+    }
+  
+    nav ul li a {
+      font-size: 1.2rem;
+    }
+    
+    nav ul li a:hover {
+      color: var(--main);
+      background-color: transparent;
+      border: none;
+    }
+  
+    .checkbtn {
+      display: inline-block;
+    }
+  
+    .overlay {
+      width: 100%;
+      height: 100vh;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+    }
+  
+    #check:checked~ul {
+      right: 10px;
+    }
+  
+    #check:checked~.overlay {
+      display: block;
+    }
+  }
+  
+  @media screen and (max-width: 500px) {
+    nav ul {
+      width: 70%;
+      right: -70%;
+    }
+  }
 
 /* Message */
 .msg_container {
@@ -160,6 +290,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: absolute;
+    top: 60px;
+    z-index: 999;
 }
 
 .msg_container .msg {
@@ -221,6 +354,8 @@ body {
 .tablePage table {
     width: 60vw;
     border-collapse: collapse;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .tablePage .filterTable {
@@ -246,6 +381,15 @@ body {
 
 .tablePage table tbody tr td {
     padding: 10px 20px;
+}
+
+@media screen and (max-width: 800px) {
+    .tablePage table {
+        overflow-x: scroll;
+        display: block;
+        width: 360px;
+        margin: 0px 4rem;
+    }
 }
 
 /* attendance Page */
@@ -373,6 +517,7 @@ body {
 }
 
 @media screen and (max-width: 700px) {
+
     .trainPage form,
     .trainPage p {
         width: 80%;
@@ -483,4 +628,21 @@ footer p .company {
 .profilesPage .profile table tr th,
 .profilesPage .profile table tr td {
     padding: 4px 20px;
+}
+
+@media screen and (max-width: 800px) {
+    form {
+        width: 360px;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .profilesPage .profile {
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
 }
