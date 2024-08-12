@@ -121,7 +121,7 @@ def login():
 ##############################################################################
 
 # To add a new Employee
-@app.route('/add_worker', methods=['POST'])
+@app.route('/add-worker', methods=['POST'])
 def add_worker():
     data = request.json
     name = data.get('name')
@@ -133,8 +133,8 @@ def add_worker():
     salary = data.get('salary')
     final_salary = data.get('salary')
 
-    working_minutes = (working_hours * 60) * 30 # working minutes per month
-    token = working_minutes / 10    # Per month token for (10 min)
+    working_minutes = (float(working_hours) * 60) * 30 # working minutes per month
+    token = float(working_minutes) / 10.0    # Per month token for (10 min)
 
     # token = round((((float(salary) / 30) / 60) * 30) / 10)   # token generation
 
@@ -149,7 +149,7 @@ def add_worker():
             "salary": (salary),
             "final_salary": (final_salary),
             "token": (token)
-         });
+         })
         
         message_body = f"Hello {data['name']}, welcome to Tech Vaseegrah. You are added as a worker. Happy Coding!"
         # Send the message using Twilio
@@ -359,8 +359,8 @@ def calculate_token():
                 # Reset token based on salary
                 salary = float(worker['salary'])
                 working_hours = float(worker['working_hours'])
-                working_minutes = (working_hours * 60) * 30 # working minutes per month
-                new_token = working_minutes / 10
+                working_minutes = (float(working_hours) * 60) * 30 # working minutes per month
+                new_token = float(working_minutes) / 10.0    # Per month token for (10 min)            
                 workersCollection.update_one(
                     {"_id": worker["_id"]},
                     {"$set": {"token": new_token, "final_salary": worker['salary']}}    # Re-initialize the token and salary

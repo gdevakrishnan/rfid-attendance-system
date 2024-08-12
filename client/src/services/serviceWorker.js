@@ -1,5 +1,5 @@
 import axios from 'axios';
-const BASE_URL = "https://rfid-attendance-system-h1uv.onrender.com/";
+const BASE_URL = "https://rfid-attendance-system-h1uv.onrender.com";
 // const BASE_URL = "http://localhost:5000";
 
 // To get all the attenance data
@@ -53,7 +53,7 @@ export const putAttendance = async (worker) => {
 // to add workers data to the database
 export const addWorker = async (newPerson) => {
     try {
-        const task = await axios.post(`${BASE_URL}/add_worker`, newPerson);
+        const task = await axios.post(`${BASE_URL}/add-worker`, newPerson);
         const response = {"status": true, data: task.data};
         return response;
     }   catch (e) {
