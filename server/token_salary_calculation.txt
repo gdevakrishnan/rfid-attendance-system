@@ -1,13 +1,23 @@
-For example the salary is Rs.80,000
-salary per month = 80000
-salary per Day = 80000 / 30 = 2667
-salary per hour = 2667 / 9 = 296
-salary per minute = 296 / 60 = 4
-salary per 10 min = 4 * 10 = 40
+SALARY AND TOKEN SPLITUPS:
 
+salary = 90,000 per month
+working hours = 8 hrs/day
 
-cost_per_token = ((((salary / 30) / working_hours) / 60) * 10)
-token = ((working_hour * 60) * 30) / 10
+working minutes = 8 * 60 = 480 min/day
+		  480 * 30 = 14,400 min/month
 
-reduced_salary = (((((working_hour * 60) * 30) / 10) - token) * 10) * (((salary / 30) / 9) / 60)
-salary = salary - reduced_salary
+tokens =  14,400 / 10 = 1,440 tokens / month
+
+salary per day = salary / 30 = 3,000 Rs/day
+
+cost per token = (salary / (working_hour * 60)) * 10
+
+SCHEDULES:
+1. TIME: 06:00
+   JOB: To inform the day is holiday or not
+
+2. TIME: 18:00
+   JOB: To calculate the token of the day and send the message
+
+3. TIME: 19:00
+   JOB: To send the complete profile to the worker through message
