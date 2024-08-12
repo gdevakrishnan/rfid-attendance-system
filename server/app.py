@@ -507,5 +507,12 @@ scheduler.start()
 
 ##############################################################################
 
+# Cron-job to make the site active
+@app.route('/cron-job', methods=['GET'])
+def cron_job():
+    return jsonify(message="Cron-job! Hello, World!")
+
+##############################################################################
+
 if __name__ == '__main__':
     app.run(debug=True)
