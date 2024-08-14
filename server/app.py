@@ -263,7 +263,6 @@ def presenceOfWorker(name, rfid_id, date):
 ##############################################################################
 
 # To send message to an employess about holidays at 6am
-@app.route('/send_holiday_message_to_worker', methods=['POST', 'GET'])
 def send_holiday_message_to_worker():
     # To check to day is a holiday or not
     current_datetime = datetime.now()
@@ -322,17 +321,15 @@ def send_holiday_message_to_worker():
                     print(f"Failed to send message to {name}: {e}")
 
 # Schedule to send the message at 4am. To inform today office is a holiday or not
-scheduler = BackgroundScheduler()
-trigger = CronTrigger(hour=6, minute=0)  # 6AM
-scheduler.add_job(send_holiday_message_to_worker, trigger)
-scheduler.start()
+@app.route('/trigger_holiday', methods=['POST'])
+def trigger_holiday():
+    send_holiday_message_to_worker()
+    return jsonify({'status': 'Holiday checked and report sent to the worker'}), 200
 
 ##############################################################################
 
-# Schedule to update the token of an employee at 6pm
-@app.route('/calculate_token', methods=['GET', 'POST'])
+@app.route('/calculate_token', methods=['POST'])
 def calculate_token():
-    # To check to day is a holiday or not
     current_datetime = datetime.now()
     today_date = current_datetime.date()
     weekday = today_date.weekday()  # Monday is 0, Sunday is 6
@@ -345,28 +342,27 @@ def calculate_token():
         if holiday['date'] == today_date:
             isHolidayToday = {"isHoliday": True}
 
-    if (not (isHolidayToday['isHoliday'])):     # don't reduce token during holidays
-
-        current_datetime = datetime.now()
-        today_date = str(current_datetime.date())   # 2024-08-12
-        todays_date = today_date[-2:] # 12
+    if not isHolidayToday['isHoliday']:
+        today_date_str = str(current_datetime.date())   # 2024-08-12
+        todays_date = today_date_str[-2:]  # 12
         cursor = workersCollection.find({})
 
         for worker in cursor:
-            # Check if today is the 1st day of the month
-            print(todays_date)
             if todays_date == "01":
-                # Reset token based on salary
                 salary = float(worker['salary'])
                 working_hours = float(worker['working_hours'])
-                working_minutes = (float(working_hours) * 60) * 30 # working minutes per month
-                new_token = float(working_minutes) / 10.0    # Per month token for (10 min)            
+                working_minutes = (working_hours * 60) * 30  # working minutes per month
+                new_token = working_minutes / 10.0  # Per month token for (10 min)
                 workersCollection.update_one(
                     {"_id": worker["_id"]},
-                    {"$set": {"token": new_token, "final_salary": worker['salary']}}    # Re-initialize the token and salary
+                    {"$set": {"token": new_token, "final_salary": worker['salary']}}  # Re-initialize the token and salary
                 )
 
-            attendanceCursor = attendanceCollection.find({"name": worker['name'], "rfid_id": worker['rfid_id'], "date": today_date})
+            attendanceCursor = attendanceCollection.find({
+                "name": worker['name'],
+                "rfid_id": worker['rfid_id'],
+                "date": today_date_str
+            })
 
             delay = 0
             previous_entry = None
@@ -383,38 +379,32 @@ def calculate_token():
                     in_time = datetime.strptime(previous_entry['time'], '%H:%M:%S').time()
                     out_time = datetime.strptime(attendance['time'], '%H:%M:%S').time()
 
-                    # Check if in_time or out_time is within the lunch break period
                     if lunch_break_start <= in_time <= lunch_break_end or lunch_break_start <= out_time <= lunch_break_end:
                         continue  # Skip this entry as it's during lunch break
 
-                    # Ensure out_time is before 5 PM (17:00)
                     if out_time > time(hour=17):
                         out_time = time(hour=17, minute=0, second=0)  # Set out_time to 17:00
 
                     if out_time < in_time:
-                        # Adjust out_time to the next day if it's earlier than in_time (possibly due to crossing midnight)
-                        out_time += timedelta(days=1)
+                        out_time = time(hour=17, minute=0, second=0)  # Adjust for crossing midnight
 
                     time_difference = datetime.combine(datetime.today(), out_time) - datetime.combine(datetime.today(), in_time)
                     minutes_difference = time_difference.total_seconds() / 60
-                    delay += max(0, minutes_difference)  # Ensure delay is non-negative
+                    if (minutes_difference > 10):
+                        delay = minutes_difference - 10
 
                 previous_entry = attendance
 
-
             if onLeave:
                 delay = float(worker['working_hours']) * 60
-            
-            lost_token = 0
-            if (delay > 10):
-                lost_token = round(float(delay) / 10)
 
-            cost_per_token = (float(worker['salary']) / (float(worker['working_hours']) * 60)) * 10
+            lost_token = round(float(delay) / 10.0)
 
-            if (lost_token > 0):
-                # Update worker's token with lost_token
-                updated_token = worker['token'] - lost_token
-                reduced_salary = worker['final_salary'] - (lost_token * cost_per_token)
+            cost_per_token = ((float(worker['salary']) / 30.0) / (float(worker['working_hours']) * 60)) * 10
+
+            if lost_token > 0:
+                updated_token = float(worker['token']) - float(lost_token)
+                reduced_salary = float(worker['final_salary']) - float(lost_token * cost_per_token)
 
                 workersCollection.update_one(
                     {"_id": worker["_id"]},
@@ -422,12 +412,12 @@ def calculate_token():
                 )
 
                 message_body = (
-                    f"Hello {worker['name']}, You lost {lost_token} tokens from your tokens. Your monthly salary is {worker['salary']}. Then your this month final salary is {worker['final_salary']}"
+                    f"Hello {worker['name']}, You lost {lost_token} tokens from your tokens. "
+                    f"Your monthly salary is {worker['salary']}. Your final salary for this month is {worker['final_salary']}."
                 )
 
                 if worker['mobile']:
                     try:
-                        # Send the message using Twilio
                         message = messenger_client.messages.create(
                             from_=twilio_mobile_number,
                             body=message_body,
@@ -437,15 +427,11 @@ def calculate_token():
                     except TwilioRestException as e:
                         print(f"Failed to send message to {worker['name']}: {e}")
 
-scheduler = BackgroundScheduler()
-trigger = CronTrigger(hour=18, minute=0)  # 6PM
-scheduler.add_job(calculate_token, trigger)
-scheduler.start()
+    return jsonify({"status": "success", "message": "Token calculation completed. The balance tokens and final salary of the user was send as a message successfully!"})
 
 ##############################################################################
 
 # To send daily reports to an appropriate employee at 7pm
-@app.route('/send_worker_profiles', methods=['GET', 'POST'])
 def send_worker_profiles():
     # To check to day is a holiday or not
     current_datetime = datetime.now()
@@ -472,7 +458,7 @@ def send_worker_profiles():
             role = worker.get('job_role')
             working_hours = worker.get('working_hours')
             salary = worker.get('salary')
-            final_salary = worker.get('salary')
+            final_salary = worker.get('final_salary')
             token = worker.get('token')
 
             # Construct the message
@@ -499,11 +485,10 @@ def send_worker_profiles():
                 except TwilioRestException as e:
                     print(f"Failed to send message to {name}: {e}")
 
-# Schedule the task to run daily at 7 PM to send the daily reports
-scheduler = BackgroundScheduler()
-trigger = CronTrigger(hour=19, minute=0)  # 7PM
-scheduler.add_job(send_worker_profiles, trigger)
-scheduler.start()
+@app.route('/trigger_reports', methods=['POST'])
+def trigger_reports():
+    send_worker_profiles()
+    return jsonify({'status': 'Reports sent'}), 200
 
 ##############################################################################
 
