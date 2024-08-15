@@ -8,6 +8,7 @@ function Signup() {
     const initialState = {
         "name": "",
         "gmail": "",
+        "company_uid": "",
         "rfid_id": "",
         "pwd": "",
         "cpwd": ""
@@ -21,17 +22,24 @@ function Signup() {
         e.preventDefault();
         for (const key in formData) {
             if (formData[key] === "") {
-              setMsg("Enter all the fields");
-              setTimeout(() => {
-                setMsg("");
-              }, 4000);
-              return;
+                setMsg("Enter all the fields");
+                setTimeout(() => {
+                    setMsg("");
+                }, 4000);
+                return;
             }
-          }
+        }
+
+        if (formData.pwd !== formData.cpwd) {
+            setMsg("Password Mismatch");
+                setTimeout(() => {
+                    setMsg("");
+                }, 4000);
+            return;
+        }
 
         userRegisteration(formData)
             .then((response) => {
-                console.log(response.data.message);
                 setMsg(response.data.message);
                 setTimeout(() => {
                     setMsg("");
@@ -66,9 +74,19 @@ function Signup() {
                         />
                     </div>
                     <div className="form_group">
+                        <label htmlFor="company_uid">Company Unique ID</label>
+                        <input
+                            type="text"
+                            name="company_uid"
+                            id="company_uid"
+                            value={formData.company_uid}
+                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                        />
+                    </div>
+                    <div className="form_group">
                         <label htmlFor="rfid_id">RFID</label>
                         <input
-                            type="number"
+                            type="text"
                             name="rfid_id"
                             id="rfid_id"
                             value={formData.rfid_id}

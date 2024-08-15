@@ -14,6 +14,7 @@ function Profile() {
     employeeRfid && findWorker({ "rfid_id": employeeRfid })
       .then((response) => {
         if (response.status) {
+          console.log(response.data);
           setProfile(response.data)
         } else {
           setMsg("Worker not found");

@@ -51,10 +51,12 @@ with open('public_holidays.json', 'r') as f:
     holidays_data = json.load(f)
 
 # To get all attendance
-@app.route('/', methods=['GET'])
+@app.route('/', methods=['POST'])
 def get_attendance_data():
+    data = request.json
+    company_uid = data.get('company_uid')
     # Fetch all documents from the collection
-    cursor = attendanceCollection.find({})
+    cursor = attendanceCollection.find({'company_uid': company_uid})
     
     # Convert ObjectId fields to string format
     attendance_data = [{**doc, '_id': str(doc['_id'])} for doc in cursor]
@@ -76,9 +78,10 @@ def signup():
     email = data.get('gmail')
     rfid_id = data.get('rfid_id')
     password = data.get('pwd')
+    company_uid = data.get('company_uid')
 
     # Check if user already exists
-    existing_user = userCollection.find_one({'name': name, 'email': email})
+    existing_user = userCollection.find_one({'name': name, 'email': email, 'company_uid': company_uid})
 
     if existing_user:
         return jsonify({'message': 'User with this name and email already exists!'}), 200
@@ -89,6 +92,7 @@ def signup():
         'email': email,
         'password': password,
         'rfid_id': rfid_id,
+        'company_uid': company_uid,
         'type': 'staff'
     }
 
@@ -114,7 +118,15 @@ def login():
         return jsonify({'message': 'password mismatch', "login": False}), 200
 
     if existing_user:
-        return jsonify({'message': 'User login successfully!', "user_data": [{"name": existing_user["name"], "gmail": existing_user["email"], "rfid_id": existing_user["rfid_id"], "type": existing_user["type"]}], "login": True}), 200
+        return jsonify({'message': 'User login successfully!', "user_data": [
+            {
+                "name": existing_user["name"],
+                "gmail": existing_user["email"],
+                "rfid_id": existing_user["rfid_id"],
+                "type": existing_user["type"],
+                "company_uid": existing_user["company_uid"]
+            }
+            ], "login": True}), 200
     else:
         return jsonify({'message': 'User not registered!', "login": False}), 200
 
@@ -132,6 +144,7 @@ def add_worker():
     working_hours = data.get('workingHours')
     salary = data.get('salary')
     final_salary = data.get('salary')
+    company_uid = data.get('company_uid')
 
     working_minutes = (float(working_hours) * 60) * 30 # working minutes per month
     token = float(working_minutes) / 10.0    # Per month token for (10 min)
@@ -148,7 +161,8 @@ def add_worker():
             "working_hours": (working_hours),
             "salary": (salary),
             "final_salary": (final_salary),
-            "token": (token)
+            "token": (token),
+            "company_uid": (company_uid)
          })
         
         message_body = f"Hello {data['name']}, welcome to Tech Vaseegrah. You are added as a worker. Happy Coding!"
@@ -220,6 +234,7 @@ def put_attendance(data):
         "working_hours": (data['working_hours']),
         "salary": (data['salary']),
         "final_salary": (data['final_salary']),
+        "company_uid": (data['company_uid']),
         "token": data['token'],
         "date": date_str,
         "time": time_str,

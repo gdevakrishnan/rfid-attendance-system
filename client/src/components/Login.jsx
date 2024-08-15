@@ -9,7 +9,8 @@ function Login() {
         setEmployeeUsername,
         setEmployeeGmail,
         setEmployeeType,
-        setEmployeeRfid
+        setEmployeeRfid,
+        setCompanyUid
     } = useContext(appContext)
     const initialState = {
         "name": "",
@@ -34,17 +35,26 @@ function Login() {
 
         userLogin(formData)
             .then((response) => {
+                console.log(response.data.user_data);
                 setEmployeeUsername(response.data.user_data[0].name);
                 setEmployeeGmail(response.data.user_data[0].gmail);
                 setEmployeeType(response.data.user_data[0].type);
                 setEmployeeRfid(response.data.user_data[0].rfid_id);
+                setCompanyUid(response.data.user_data[0].company_uid);
                 setMsg(response.data.message);
                 setTimeout(() => {
                     setMsg("");
                 }, 2000);
                 nav('/');
             })
-            .catch((e) => console.log(e.message));
+            .catch((e) => {
+                setMsg("Login Failed");
+                setTimeout(() => {
+                    setMsg("");
+                }, 4000);
+
+                console.log(e.message)
+            });
     }
 
     return (

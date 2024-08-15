@@ -10,9 +10,10 @@ function App() {
   const [employeeGmail, setEmployeeGmail] = useState(null);
   const [employeeType, setEmployeeType] = useState(null);
   const [employeeRfid, setEmployeeRfid] = useState(null);
+  const [companyUid, setCompanyUid] = useState(null);
 
   useEffect(() => {
-    getAttendaceData().then((response) => {
+    getAttendaceData({"company_uid": companyUid}).then((response) => {
       if (response.status) {
         setAttendance(response.data);
       }
@@ -21,17 +22,19 @@ function App() {
 
   const context = {
     attendance,
-    setAttendance,
     msg,
-    setMsg,
     employeeUsername,
     employeeGmail,
     employeeType, 
     employeeRfid, 
+    companyUid,
+    setAttendance,
+    setMsg,
     setEmployeeUsername,
     setEmployeeGmail,
     setEmployeeType,
-    setEmployeeRfid
+    setEmployeeRfid,
+    setCompanyUid
   }
 
   return (

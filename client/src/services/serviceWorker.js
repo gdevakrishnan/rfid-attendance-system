@@ -1,11 +1,11 @@
 import axios from 'axios';
-const BASE_URL = "https://rfid-attendance-system-h1uv.onrender.com";
-// const BASE_URL = "http://localhost:5000";
+// const BASE_URL = "https://rfid-attendance-system-h1uv.onrender.com";
+const BASE_URL = "http://localhost:5000";
 
 // To get all the attenance data
-export const getAttendaceData = async () => {
+export const getAttendaceData = async (company_details) => {
     try {
-        const task = await axios.get(`${BASE_URL}/`);
+        const task = await axios.post(`${BASE_URL}/`, company_details);
         const response = {"status": true, data: task.data};
         return response;
     }   catch (e) {

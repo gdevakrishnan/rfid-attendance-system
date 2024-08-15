@@ -3,11 +3,16 @@ import { addWorker } from '../services/serviceWorker';
 import appContext from '../context/appContext';
 
 function Add() {
-  const { setMsg } = useContext(appContext);
+  const { 
+    setMsg,
+    companyUid
+  } = useContext(appContext);
 
   const initialState = {
+    "company_uid": companyUid,
     "name": "",
     "rfid_id": "",
+    "employee_id": "",
     "role": "",
     "age": "",
     "mobile": "",
@@ -29,6 +34,7 @@ function Add() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const check = processText(newPerson.name);
+    setNewPerson({ ...newPerson, "name": check.processedText});
 
     for (const key in newPerson) {
       if (newPerson[key] === "") {
@@ -41,7 +47,7 @@ function Add() {
     }
 
     if (!check.hasSpecialCharacters) {
-      setNewPerson({ ...newPerson, "name": check.processedText });
+      
       addWorker(newPerson)
         .then((response) => {
           setMsg(response.data.message);
@@ -71,15 +77,17 @@ function Add() {
           </div>
 
           <div className="form_group">
-            <label htmlFor="rfid_id">RFID</label>
+            <label htmlFor="employee_id">ID</label>
             <input
               type="number"
-              name="rfid_id"
-              id="rfid_id"
-              value={newPerson.rfid_id}
-              onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+              name="employee_id"
+              id="employee_id"
+              value={newPerson.employee_id}
+              onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value, 'rfid_id': companyUid + '_' + e.target.value })}
             />
           </div>
+
+          <p>RFID: {companyUid + '_' + newPerson.employee_id}</p>
 
           <div className="form_group">
             <label htmlFor="age">Age</label>
