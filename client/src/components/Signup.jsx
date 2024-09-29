@@ -2,6 +2,8 @@ import React, { Fragment, useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { userRegisteration } from '../services/serviceWorker';
 import appContext from '../context/appContext'
+import app_logo from '../assets/app_logo.png';
+import vector from '../assets/vector2.svg';
 
 function Signup() {
     const { setMsg } = useContext(appContext);
@@ -32,9 +34,9 @@ function Signup() {
 
         if (formData.pwd !== formData.cpwd) {
             setMsg("Password Mismatch");
-                setTimeout(() => {
-                    setMsg("");
-                }, 4000);
+            setTimeout(() => {
+                setMsg("");
+            }, 4000);
             return;
         }
 
@@ -51,76 +53,96 @@ function Signup() {
 
     return (
         <Fragment>
-            <section className="page signup_page trainPage">
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <div className="form_group">
-                        <label htmlFor="name">User Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                        />
-                    </div>
-                    <div className="form_group">
-                        <label htmlFor="gmail">E-Mail</label>
-                        <input
-                            type="email"
-                            name="gmail"
-                            id="gmail"
-                            value={formData.gmail}
-                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                        />
-                    </div>
-                    <div className="form_group">
-                        <label htmlFor="company_uid">Company Unique ID</label>
-                        <input
-                            type="text"
-                            name="company_uid"
-                            id="company_uid"
-                            value={formData.company_uid}
-                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                        />
-                    </div>
-                    <div className="form_group">
-                        <label htmlFor="rfid_id">RFID</label>
-                        <input
-                            type="text"
-                            name="rfid_id"
-                            id="rfid_id"
-                            value={formData.rfid_id}
-                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                        />
-                    </div>
-                    <div className="form_group">
-                        <label htmlFor="pwd">Password</label>
-                        <input
-                            type="password"
-                            name="pwd"
-                            id="pwd"
-                            value={formData.pwd}
-                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                        />
-                    </div>
-                    <div className="form_group">
-                        <label htmlFor="cpwd">Re-Password</label>
-                        <input
-                            type="password"
-                            name="cpwd"
-                            id="cpwd"
-                            value={formData.cpwd}
-                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                        />
-                    </div>
+            <section className="page signup_page form_page">
+                <div className="form_main">
+                    <div className="form_left">
+                        <header>
+                            <div className="logo_container">
+                                <Link to={'/'}>
+                                    <img src={app_logo} alt="Tech Vaseegrah" className="logo" />
+                                </Link>
+                                <h1 className="logo_title">Attend-io</h1>
+                            </div>
+                        </header>
 
-                    <input
-                        type="submit"
-                        value="Signup"
-                        onSubmit={(e) => handleSubmit(e)}
-                    />
-                </form>
-                <p>Already have an accout? <Link to={'/login'}>Login</Link></p>
+                        <div className="form_container">
+                            <h1 className="form_title">Create an account</h1>
+
+                            <form onSubmit={(e) => handleSubmit(e)}>
+                                <div className="form_group">
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                        placeholder='username'
+                                    />
+                                </div>
+                                <div className="form_group">
+                                    <input
+                                        type="email"
+                                        name="gmail"
+                                        id="gmail"
+                                        value={formData.gmail}
+                                        onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                        placeholder='email'
+                                    />
+                                </div>
+                                <div className="form_group">
+                                    <input
+                                        type="text"
+                                        name="company_uid"
+                                        id="company_uid"
+                                        value={formData.company_uid}
+                                        onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                        placeholder='company unique id'
+                                    />
+                                </div>
+                                <div className="form_group">
+                                    <input
+                                        type="text"
+                                        name="rfid_id"
+                                        id="rfid_id"
+                                        value={formData.rfid_id}
+                                        onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                        placeholder='RFID id'
+                                    />
+                                </div>
+                                <div className="form_group">
+                                    <input
+                                        type="password"
+                                        name="pwd"
+                                        id="pwd"
+                                        value={formData.pwd}
+                                        onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                        placeholder='password'
+                                    />
+                                </div>
+                                <div className="form_group">
+                                    <input
+                                        type="password"
+                                        name="cpwd"
+                                        id="cpwd"
+                                        value={formData.cpwd}
+                                        onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                        placeholder='confirm password'
+                                    />
+                                </div>
+
+                                <input
+                                    type="submit"
+                                    value="Signup"
+                                    onSubmit={(e) => handleSubmit(e)}
+                                />
+                            </form>
+                            <p>Already have an accout? <Link to={'/login'}>Login</Link></p>
+                        </div>
+                    </div>
+                    <div className="form_right">
+                        <img src={vector} alt="vector" className="vector" />
+                    </div>
+                </div>
             </section>
         </Fragment>
     )

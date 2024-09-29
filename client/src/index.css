@@ -273,3 +273,164 @@ body {
         width: 80vw;
     }
 }
+
+/* Form Page - Signup / Login */
+.form_page .form_main {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.form_page .form_main .form_left,
+.form_page .form_main .form_right {
+    width: 50vw;
+    height: 100vh;
+}
+
+.form_page .form_main .form_left {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.form_page .form_main .form_left .form_container {
+    width: 70%;
+}
+
+.form_page .form_main .form_left .form_container .form_title {
+    color: #D9D9D9;
+    font-size: 1.6rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+} 
+
+.form_page .form_main .form_left .form_container form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+
+.form_page .form_main .form_left .form_container form .form_group ,
+.form_page .form_main .form_left .form_container form input {
+    width: 100%;
+}
+
+.form_page .form_main .form_left .form_container form .form_group input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border: 1px solid #757575;
+    padding: 8px 14px;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    color: #D9D9D9;
+}
+
+.form_page .form_main .form_left .form_container form input[type="submit"] {
+    background-color: #00C9FFC9;
+    font-size: 1.2rem;
+    font-weight: 200;
+    padding: 10px 0px;
+    color: #D9D9D9;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    margin-top: 20px;
+}
+
+.form_page .form_main .form_left header {
+    background-color: #484848;
+    width: 20vw;
+    height: 70px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 20px auto 0px;
+    padding: 0px 20px;
+    border-radius: 20px;
+    backdrop-filter: blur(26.399999618530273px);
+    box-shadow: 0px 4px 4px 0px #C9C9C940;
+}
+
+.form_page .form_main .form_left .form_container p {
+    color: #D9D9D9;
+    text-align: center;
+    margin-top: 20px;
+    font-size: 0.8rem;
+}
+
+.form_page .form_main .form_left .form_container p a {
+    color: #00C9FFC9;
+}
+
+.form_page .form_main .form_left header .logo_container {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.form_page .form_main .form_left header .logo_container .logo_title {
+    color: #fcfcfc;
+    font-family: "Sofadi One", system-ui;
+    font-weight: 400;
+}
+
+.form_page .form_main .form_left header .logo_container .logo {
+    width: 35px;
+    height: auto;
+}
+
+.form_page .form_main .form_left .form_container form .form_group {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_page .form_main .form_left .form_container form .form_group input[type="checkbox"] {
+    width: 30px;
+    margin-top: 10px;
+}
+
+.form_page .form_main .form_left .form_container form .form_group label[for="terms"] {
+    width: 90%;
+    color: #D9D9D9;
+    font-size: 0.8rem;
+    margin-top: 20px;
+    margin-left: 10px;
+}
+
+/* vectors */
+.form_page .form_main .form_right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_page .form_main .form_right .vector {
+    width: 60%;
+    height: auto;
+    object-fit: cover;
+}
+
+@media screen and (max-width: 957px) {
+    .form_page .form_main .form_right {
+        display: none;
+    }
+
+    .form_page .form_main .form_left {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .form_page .form_main .form_left header {
+        width: 40vw;
+    }
+
+    .form_page .form_main .form_left .form_container {
+        width: 80%;
+    }
+}

@@ -2,6 +2,8 @@ import React, { Fragment, useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { userLogin } from '../services/serviceWorker';
 import appContext from '../context/appContext';
+import app_logo from '../assets/app_logo.png';
+import vector from '../assets/vector1.svg';
 
 function Login() {
     const {
@@ -61,48 +63,69 @@ function Login() {
         <Fragment>
             <section className="page login_page form_page">
                 <div className="form_main">
-                    <div className="form_container left_form">
-                        <form onSubmit={(e) => handleSubmit(e)}>
-                            <div className="form_group">
-                                <label htmlFor="name">User Name</label>
-                                <input
-                                    type="text"
-                                    name="name"
-                                    id="name"
-                                    value={formData.name}
-                                    onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                                />
+                    <div className="form_left">
+                        <header>
+                            <div className="logo_container">
+                                <Link to={'/'}>
+                                    <img src={app_logo} alt="Tech Vaseegrah" className="logo" />
+                                </Link>
+                                <h1 className="logo_title">Attend-io</h1>
                             </div>
-                            <div className="form_group">
-                                <label htmlFor="gmail">E-Mail</label>
-                                <input
-                                    type="email"
-                                    name="gmail"
-                                    id="gmail"
-                                    value={formData.gmail}
-                                    onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                                />
-                            </div>
-                            <div className="form_group">
-                                <label htmlFor="pwd">Password</label>
-                                <input
-                                    type="password"
-                                    name="pwd"
-                                    id="pwd"
-                                    value={formData.pwd}
-                                    onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                                />
-                            </div>
+                        </header>
+                        <div className="form_container">
+                            <h1 className="form_title">Signin your account</h1>
+                            <form onSubmit={(e) => handleSubmit(e)}>
+                                <div className="form_group">
+                                    <input
+                                        type="text"
+                                        name="name"
+                                        id="name"
+                                        value={formData.name}
+                                        onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                        placeholder='username'
+                                    />
+                                </div>
+                                <div className="form_group">
+                                    <input
+                                        type="email"
+                                        name="gmail"
+                                        id="gmail"
+                                        value={formData.gmail}
+                                        onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                        placeholder='email'
+                                    />
+                                </div>
+                                <div className="form_group">
+                                    <input
+                                        type="password"
+                                        name="pwd"
+                                        id="pwd"
+                                        value={formData.pwd}
+                                        onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                        placeholder='password'
+                                    />
+                                </div>
 
-                            <input
-                                type="submit"
-                                value="Login"
-                                onSubmit={(e) => handleSubmit(e)}
-                            />
-                        </form>
-                        <p>Don't have an account? <Link to={'/signup'}>Signup</Link></p>
+                                <div className="form_group">
+                                    <input type="checkbox" name="terms" id="terms" />
+                                    <label htmlFor="terms">
+                                        By clicking you accept our terms and policies/this infoprmation wil be securely transferred to attend ie
+                                    </label>
+                                </div>
+
+                                <input
+                                    type="submit"
+                                    value="Login"
+                                    onSubmit={(e) => handleSubmit(e)}
+                                />
+                            </form>
+                            <p>Don't have an account? <Link to={'/signup'}>Signup</Link></p>
+                        </div>
                     </div>
-                    <div className="right_form"></div>
+
+                    <div className="form_right">
+                        <img src={vector} alt="vector" className="vector" />
+                    </div>
                 </div>
             </section>
         </Fragment>
