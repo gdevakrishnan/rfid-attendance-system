@@ -44,7 +44,7 @@ function Dashboard() {
             <img src={img2} alt="img2" className="img2" />
             <img src={img3} alt="img3" className="img3" />
             <img src={img4} alt="img4" className="img4" />
-            
+
             <div className="content">
               <h1 className="hero_title"><span>Smart</span> Attendance, </h1>
               <h1 className="hero_title">Smarter Workforce</h1>
@@ -52,7 +52,9 @@ function Dashboard() {
             </div>
 
             <div className="button">
-              <button className="btn">Continue Login</button>
+              <Link to={'/login'}>
+                <button className="btn">Continue Login</button>
+              </Link>
             </div>
           </div>
         </div>

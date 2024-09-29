@@ -59,46 +59,51 @@ function Login() {
 
     return (
         <Fragment>
-            <section className="page login_page trainPage">
-                <form onSubmit={(e) => handleSubmit(e)}>
-                    <div className="form_group">
-                        <label htmlFor="name">User Name</label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            value={formData.name}
-                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                        />
-                    </div>
-                    <div className="form_group">
-                        <label htmlFor="gmail">E-Mail</label>
-                        <input
-                            type="email"
-                            name="gmail"
-                            id="gmail"
-                            value={formData.gmail}
-                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                        />
-                    </div>
-                    <div className="form_group">
-                        <label htmlFor="pwd">Password</label>
-                        <input
-                            type="password"
-                            name="pwd"
-                            id="pwd"
-                            value={formData.pwd}
-                            onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
-                        />
-                    </div>
+            <section className="page login_page form_page">
+                <div className="form_main">
+                    <div className="form_container left_form">
+                        <form onSubmit={(e) => handleSubmit(e)}>
+                            <div className="form_group">
+                                <label htmlFor="name">User Name</label>
+                                <input
+                                    type="text"
+                                    name="name"
+                                    id="name"
+                                    value={formData.name}
+                                    onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                />
+                            </div>
+                            <div className="form_group">
+                                <label htmlFor="gmail">E-Mail</label>
+                                <input
+                                    type="email"
+                                    name="gmail"
+                                    id="gmail"
+                                    value={formData.gmail}
+                                    onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                />
+                            </div>
+                            <div className="form_group">
+                                <label htmlFor="pwd">Password</label>
+                                <input
+                                    type="password"
+                                    name="pwd"
+                                    id="pwd"
+                                    value={formData.pwd}
+                                    onChange={(e) => setFormData({ ...formData, [e.target.id]: e.target.value })}
+                                />
+                            </div>
 
-                    <input
-                        type="submit"
-                        value="Login"
-                        onSubmit={(e) => handleSubmit(e)}
-                    />
-                </form>
-                <p>Don't have an account? <Link to={'/signup'}>Signup</Link></p>
+                            <input
+                                type="submit"
+                                value="Login"
+                                onSubmit={(e) => handleSubmit(e)}
+                            />
+                        </form>
+                        <p>Don't have an account? <Link to={'/signup'}>Signup</Link></p>
+                    </div>
+                    <div className="right_form"></div>
+                </div>
             </section>
         </Fragment>
     )
