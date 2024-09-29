@@ -1,115 +1,66 @@
-import React, { Fragment, useContext, useState } from 'react';
-import appContext from '../context/appContext';
+import React, { Fragment } from 'react'
+import app_logo from '../assets/app_logo.png';
+import { Link } from 'react-router-dom';
+import img1 from '../assets/icons/dashboard/img1.png';
+import img2 from '../assets/icons/dashboard/img2.png';
+import img3 from '../assets/icons/dashboard/img3.png';
+import img4 from '../assets/icons/dashboard/img4.png';
 
 function Dashboard() {
-  const { attendance } = useContext(appContext);
-  const [filterDate, setFilterDate] = useState("");
-  const [filterName, setFilterName] = useState("");
-  const [filteredAttendance, setFilteredAttendance] = useState([]);
-  const [status, setStatus] = useState(false);
-
-  const Template = () => {
-    return (
-      <table>
-        <thead>
-          <tr>
-            <th>RFID</th>
-            <th>Name</th>
-            <th>Date</th>
-            <th>Time</th>
-            <th>Presence</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            attendance.map((aData) => {
-              return (
-                <tr key={aData._id}>
-                  <td>{aData.rfid_id}</td>
-                  <td>{aData.name}</td>
-                  <td>{aData.date}</td>
-                  <td>{aData.time}</td>
-                  <td>{(aData.presence) ? "IN" : "OUT"}</td>
-                </tr>
-              );
-            })
-          }
-        </tbody>
-      </table>
-    );
-  }
-
-
-  const FilterTemplate = () => {
-    return (
-      (filteredAttendance.length > 0) ? (
-        <Fragment>
-          <table className='filterTable'>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Date</th>
-                <th>Time</th>
-                <th>Presence</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                filteredAttendance.map((aData) => {
-                  return (
-                    <tr key={aData._id}>
-                      <td>{aData.name}</td>
-                      <td>{aData.date}</td>
-                      <td>{aData.time}</td>
-                      <td>{(aData.presence) ? "IN" : "OUT"}</td>
-                    </tr>
-                  );
-                })
-              }
-            </tbody>
-          </table>
-        </Fragment>
-      ) : <h1 className='notFound'>No Data Found</h1>
-    );
-  }
-
-  const handleFilter = (e) => {
-    e.preventDefault();
-    if (filterDate.trim() !== "" || filterName.trim() !== "") {
-      let filter = attendance.filter((aData) => aData.date === filterDate && aData.name === filterName);
-      setFilteredAttendance(filter);
-      setStatus(true);
-    }
-  }
-
-  const handleReset = (e) => {
-    e.preventDefault();
-    setStatus(false);
-    setFilteredAttendance([]);
-    setFilterDate(""); // Clear the input field
-    setFilterName(""); // Clear the input field
-  }
-
   return (
     <Fragment>
-      <section className="page tablePage">
-        <form onSubmit={(e) => handleFilter(e)}>
-          <div className="form_group" style={{ display: "flex", gap: "20px" }}>
-            <input type="date" name="filteredDate" id="setFilteredDate" value={filterDate} onChange={(e) => setFilterDate(e.target.value)} />
-            <input type="text" name="filterName" id="filterName" value={filterName} onChange={(e) => setFilterName(e.target.value)} placeholder='name' />
+      <section className="page hero_page">
+        <header>
+          <div className="logo_container">
+            <img src={app_logo} alt="Tech Vaseegrah" className="logo" />
+            <h1 className="logo_title">Attend-io</h1>
           </div>
-          <div className="btn">
-            <input type="submit" value="Filter" onClick={(e) => handleFilter(e)} />
-            <button onClick={handleReset}>Reset</button>
+
+          <nav>
+            <ul>
+              <li>
+                <Link to={'/'}>Resourced</Link>
+              </li>
+              <li>
+                <Link to={'/'}>About</Link>
+              </li>
+              <li>
+                <Link to={'/'}>
+                  <button className='pricing_btn btn'>pricing</button>
+                </Link>
+              </li>
+              <li>
+                <Link to={'/'}>
+                  <button className='discover_btn btn'>Discover the platform</button>
+                </Link>
+              </li>
+            </ul>
+          </nav>
+        </header>
+
+        <div className="main_container">
+          <div className="container">
+            <img src={img1} alt="img1" className="img1" />
+            <img src={img2} alt="img2" className="img2" />
+            <img src={img3} alt="img3" className="img3" />
+            <img src={img4} alt="img4" className="img4" />
+            
+            <div className="content">
+              <h1 className="hero_title"><span>Smart</span> Attendance, </h1>
+              <h1 className="hero_title">Smarter Workforce</h1>
+              <p className="hero_content">With our software, attendance is more than just a check-in. Leverage  comprehensive analytics to understand productivity trends, improve scheduling, and make smarter workforce decisions</p>
+            </div>
+
+            <div className="button">
+              <button className="btn">Continue Login</button>
+            </div>
           </div>
-        </form>
-        {status ? <FilterTemplate /> : null}
-        {
-          (attendance.length > 0) ? <Template /> : <h1 className='notFound'>No Data Found</h1>
-        }
+        </div>
+
+        <div className="ellipse"></div>
       </section>
     </Fragment>
   )
 }
 
-export default Dashboard;
+export default Dashboard

@@ -32,8 +32,8 @@ function Navbar() {
       <header>
         <nav>
           <input type="checkbox" id="check" onClick={() => setMenuBtn(!menuBtn)} />
-          <label htmlFor='check' class="overlay"></label>
-          <label htmlFor='check' class="checkbtn">
+          <label htmlFor='check' className="overlay"></label>
+          <label htmlFor='check' className="checkbtn">
             {
               (menuBtn) ? <FaBarsStaggered className='fa'/> : <GrClose className='fa'/>
             }
