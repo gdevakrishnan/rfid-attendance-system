@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { FaBarsStaggered } from "react-icons/fa6";
 import { GrClose } from "react-icons/gr";
 import appContext from '../context/appContext'
+import app_logo from '../assets/app_logo.png';
 
 function Navbar() {
   const [menuBtn, setMenuBtn] = useState(true);
@@ -13,7 +14,8 @@ function Navbar() {
     setEmployeeUsername,
     setEmployeeGmail,
     setEmployeeType,
-    setEmployeeRfid
+    setEmployeeRfid,
+    setIsLogin
   } = useContext(appContext);
 
   const nav = useNavigate();
@@ -24,24 +26,31 @@ function Navbar() {
     setEmployeeGmail(null);
     setEmployeeType(null);
     setEmployeeRfid(null);
+    setIsLogin(false);
     nav('/');
   }
 
   return (
     <Fragment>
       <header>
+        <div className="logo_container">
+          <Link to={'/'}>
+            <img src={app_logo} alt="Tech Vaseegrah" className="logo" />
+          </Link>
+          <h1 className="logo_title">Attend-io</h1>
+        </div>
         <nav>
-          <input type="checkbox" id="check" onClick={() => setMenuBtn(!menuBtn)} />
+          {/* <input type="checkbox" id="check" onClick={() => setMenuBtn(!menuBtn)} />
           <label htmlFor='check' className="overlay"></label>
           <label htmlFor='check' className="checkbtn">
             {
-              (menuBtn) ? <FaBarsStaggered className='fa'/> : <GrClose className='fa'/>
+              (menuBtn) ? <FaBarsStaggered className='fa' /> : <GrClose className='fa' />
             }
           </label>
 
           <Link to={'/'} className='logo'>
             <h1>Attend-ie</h1>
-          </Link>
+          </Link> */}
 
           <ul>
             <li>
@@ -69,7 +78,7 @@ function Navbar() {
                     <Link to={'/profile'}>{employeeUsername}</Link>
                   </li>
                   <li>
-                    <button className='logout_btn' onClick={(e) => handleLogout(e)}>Logout</button>
+                    <button className='logout_btn discover_btn' onClick={(e) => handleLogout(e)}>Logout</button>
                   </li>
                 </Fragment>
               ) : (

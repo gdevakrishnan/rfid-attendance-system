@@ -2,8 +2,8 @@ import React, { Fragment, useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { userLogin } from '../services/serviceWorker';
 import appContext from '../context/appContext';
-import app_logo from '../assets/app_logo.png';
-import vector from '../assets/vector1.svg';
+import vector from '../assets/login.png';
+import Navbar from './Navbar';
 
 function Login() {
     const {
@@ -12,7 +12,8 @@ function Login() {
         setEmployeeGmail,
         setEmployeeType,
         setEmployeeRfid,
-        setCompanyUid
+        setCompanyUid,
+        setIsLogin,
     } = useContext(appContext)
     const initialState = {
         "name": "",
@@ -44,10 +45,11 @@ function Login() {
                 setEmployeeRfid(response.data.user_data[0].rfid_id);
                 setCompanyUid(response.data.user_data[0].company_uid);
                 setMsg(response.data.message);
+                setIsLogin(true);
                 setTimeout(() => {
                     setMsg("");
                 }, 2000);
-                nav('/');
+                nav('/add');
             })
             .catch((e) => {
                 setMsg("Login Failed");
@@ -62,16 +64,10 @@ function Login() {
     return (
         <Fragment>
             <section className="page login_page form_page">
+                <Navbar />
+
                 <div className="form_main">
                     <div className="form_left">
-                        <header>
-                            <div className="logo_container">
-                                <Link to={'/'}>
-                                    <img src={app_logo} alt="Tech Vaseegrah" className="logo" />
-                                </Link>
-                                <h1 className="logo_title">Attend-io</h1>
-                            </div>
-                        </header>
                         <div className="form_container">
                             <h1 className="form_title">Signin your account</h1>
                             <form onSubmit={(e) => handleSubmit(e)}>

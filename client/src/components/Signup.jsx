@@ -2,8 +2,8 @@ import React, { Fragment, useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { userRegisteration } from '../services/serviceWorker';
 import appContext from '../context/appContext'
-import app_logo from '../assets/app_logo.png';
-import vector from '../assets/vector2.svg';
+import vector from '../assets/register.png';
+import Navbar from './Navbar';
 
 function Signup() {
     const { setMsg } = useContext(appContext);
@@ -54,16 +54,9 @@ function Signup() {
     return (
         <Fragment>
             <section className="page signup_page form_page">
+                <Navbar />
                 <div className="form_main">
                     <div className="form_left">
-                        <header>
-                            <div className="logo_container">
-                                <Link to={'/'}>
-                                    <img src={app_logo} alt="Tech Vaseegrah" className="logo" />
-                                </Link>
-                                <h1 className="logo_title">Attend-io</h1>
-                            </div>
-                        </header>
 
                         <div className="form_container">
                             <h1 className="form_title">Create an account</h1>

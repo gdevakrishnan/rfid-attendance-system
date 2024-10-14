@@ -11,6 +11,7 @@ function App() {
   const [employeeType, setEmployeeType] = useState(null);
   const [employeeRfid, setEmployeeRfid] = useState(null);
   const [companyUid, setCompanyUid] = useState(null);
+  const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
     getAttendaceData({"company_uid": companyUid}).then((response) => {
@@ -28,13 +29,15 @@ function App() {
     employeeType, 
     employeeRfid, 
     companyUid,
+    isLogin,
     setAttendance,
     setMsg,
     setEmployeeUsername,
     setEmployeeGmail,
     setEmployeeType,
     setEmployeeRfid,
-    setCompanyUid
+    setCompanyUid,
+    setIsLogin
   }
 
   return (

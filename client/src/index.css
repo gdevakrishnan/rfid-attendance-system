@@ -35,7 +35,7 @@ body {
     overflow: hidden;
 }
 
-.hero_page header {
+header {
     background-color: #484848;
     width: 85%;
     height: 70px;
@@ -50,38 +50,39 @@ body {
     box-shadow: 0px 4px 4px 0px #C9C9C940;
 }
 
-.hero_page header .logo_container {
+header .logo_container {
     display: flex;
     align-items: center;
     gap: 5px;
 }
 
-.hero_page header .logo_container .logo_title {
+header .logo_container .logo_title {
     color: #fcfcfc;
     font-family: "Sofadi One", system-ui;
     font-weight: 400;
 }
 
-.hero_page header .logo_container .logo {
+header .logo_container .logo {
     width: 35px;
     height: auto;
 }
 
-.hero_page header nav ul {
+header nav ul {
     display: flex;
     gap: 20px;
     justify-content: center;
     align-items: center;
 }
 
-.hero_page header nav ul li a {
+header nav ul li a {
     font-size: 1.1rem;
     font-weight: 400;
     color: #fcfcfc;
     font-family: "Sofadi One", system-ui;
 }
 
-.hero_page header nav ul li a .btn {
+.logout_btn,
+header nav ul li a .btn {
     border: none;
     outline: none;
     font-size: 1.1rem;
@@ -91,12 +92,13 @@ body {
     border-radius: 10px;
 }
 
-.hero_page header nav ul li a .pricing_btn {
+header nav ul li a .pricing_btn {
     background-color: #757575;
     color: #fcfcfc;
 }
 
-.hero_page header nav ul li a .discover_btn {
+header nav ul li .discover_btn,
+header nav ul li a .discover_btn {
     background-color: #fcfcfc;
     color: #757575;
 }
@@ -237,17 +239,17 @@ body {
 }
 
 @media screen and (max-width: 900px) {
-    .hero_page header {
+    header {
         width: 95%;
     }
 }
 
 @media screen and (max-width: 800px) {
-    .hero_page header nav{
+    header nav{
         display: none;
     }
     
-    .hero_page header {
+    header {
         display: flex;
         justify-content: center;
         align-items: center;
@@ -278,12 +280,14 @@ body {
 .form_page .form_main {
     display: flex;
     margin-bottom: 20px;
+    padding-bottom: 5rem;
 }
 
 .form_page .form_main .form_left,
 .form_page .form_main .form_right {
     width: 50vw;
-    height: 100vh;
+    min-height: 100vh;
+    height: auto;
 }
 
 .form_page .form_main .form_left {
@@ -292,6 +296,7 @@ body {
     gap: 2rem;
     align-items: center;
     justify-content: flex-start;
+    padding-top: 3.4rem;
 }
 
 .form_page .form_main .form_left .form_container {
@@ -330,7 +335,7 @@ body {
 }
 
 .form_page .form_main .form_left .form_container form input[type="submit"] {
-    background-color: #00C9FFC9;
+    background-color: #5C4DD2;
     font-size: 1.2rem;
     font-weight: 200;
     padding: 10px 0px;
@@ -364,7 +369,7 @@ body {
 }
 
 .form_page .form_main .form_left .form_container p a {
-    color: #00C9FFC9;
+    color: #5C4DD2;
 }
 
 .form_page .form_main .form_left header .logo_container {
@@ -433,4 +438,22 @@ body {
     .form_page .form_main .form_left .form_container {
         width: 80%;
     }
+}
+
+/* Message */
+
+.msg_container {
+    background-color: #757575;
+    border-left: 8px solid #1fff1f;
+    width: auto;
+    height: auto;
+    position: fixed;
+    top: 1rem;
+    right: 2rem;
+    padding: 10px 20px;
+    border-radius: 4px;
+}
+
+.msg_container p {
+    color: #D9D9D9;
 }

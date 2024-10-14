@@ -9,10 +9,6 @@ function Message() {
                 (msg) ? (
                     <div className="msg_container">
                         <p className="msg">{ msg }</p>
-                        <button onClick={(e) => {
-                            e.preventDefault();
-                            setMsg(null);
-                        }}>X</button>
                     </div>
                 ) : null
             }

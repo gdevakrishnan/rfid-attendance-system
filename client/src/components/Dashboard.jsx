@@ -5,6 +5,7 @@ import img1 from '../assets/icons/dashboard/img1.png';
 import img2 from '../assets/icons/dashboard/img2.png';
 import img3 from '../assets/icons/dashboard/img3.png';
 import img4 from '../assets/icons/dashboard/img4.png';
+import AttendanceDashboard from './AttendanceDashboard';
 
 function Dashboard() {
   return (
@@ -61,6 +62,7 @@ function Dashboard() {
 
         <div className="ellipse"></div>
       </section>
+      <AttendanceDashboard />
     </Fragment>
   )
 }

@@ -1,9 +1,11 @@
 import React, { Fragment, useContext, useState } from 'react'
 import { addWorker } from '../services/serviceWorker';
 import appContext from '../context/appContext';
+import vector from '../assets/worker.png';
+import Navbar from './Navbar';
 
 function Add() {
-  const { 
+  const {
     setMsg,
     companyUid
   } = useContext(appContext);
@@ -34,7 +36,7 @@ function Add() {
   const handleSubmit = (e) => {
     e.preventDefault();
     const check = processText(newPerson.name);
-    setNewPerson({ ...newPerson, "name": check.processedText});
+    setNewPerson({ ...newPerson, "name": check.processedText });
 
     for (const key in newPerson) {
       if (newPerson[key] === "") {
@@ -47,7 +49,7 @@ function Add() {
     }
 
     if (!check.hasSpecialCharacters) {
-      
+
       addWorker(newPerson)
         .then((response) => {
           setMsg(response.data.message);
@@ -63,94 +65,108 @@ function Add() {
   }
   return (
     <Fragment>
-      <section className="page trainPage">
-        <form onSubmit={(e) => handleSubmit(e)}>
-          <div className="form_group">
-            <label htmlFor="name">Worker Name</label>
-            <input
-              type="text"
-              name="name"
-              id="name"
-              value={newPerson.name}
-              onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
-            />
+      <section className="page add_worker_page form_page">
+        <Navbar />
+        <div className="form_main">
+          <div className="form_left">
+
+            <div className="form_container">
+              <h1 className="form_title">Create a worker</h1>
+              <form onSubmit={(e) => handleSubmit(e)}>
+                <div className="form_group">
+                  <input
+                    type="text"
+                    name="name"
+                    id="name"
+                    placeholder="Username"
+                    value={newPerson.name}
+                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                  />
+                </div>
+
+                <div className="form_group">
+                  <input
+                    type="number"
+                    name="employee_id"
+                    id="employee_id"
+                    placeholder="Employee Id"
+                    value={newPerson.employee_id}
+                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value, 'rfid_id': companyUid + '_' + e.target.value })}
+                  />
+                </div>
+
+                <div className="form_group">
+                  <p>RFID: {companyUid + '_' + newPerson.employee_id}</p>
+                </div>
+
+                <div className="form_group">
+                  <input
+                    type="number"
+                    name="age"
+                    id="age"
+                    placeholder="Age"
+                    value={newPerson.age}
+                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                  />
+                </div>
+
+                <div className="form_group">
+                  <input
+                    type="text"
+                    name="mobile"
+                    id="mobile"
+                    placeholder="Mobile no."
+                    value={newPerson.mobile}
+                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                  />
+                </div>
+
+                <div className="form_group">
+                  <input
+                    type="text"
+                    name="role"
+                    id="role"
+                    placeholder="Job Role"
+                    value={newPerson.role}
+                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                  />
+                </div>
+
+                <div className="form_group">
+                  <input
+                    type="number"
+                    name="workingHours"
+                    id="workingHours"
+                    placeholder="Working Hours"
+                    value={newPerson.workingHours}
+                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                  />
+                </div>
+
+                <div className="form_group">
+                  <input
+                    type="number"
+                    name="salary"
+                    id="salary"
+                    placeholder="Salary"
+                    value={newPerson.salary}
+                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                  />
+                </div>
+
+                <input
+                  type="submit"
+                  value="Add Worker"
+                  onSubmit={(e) => handleSubmit(e)}
+                />
+              </form>
+            </div>
           </div>
 
-          <div className="form_group">
-            <label htmlFor="employee_id">ID</label>
-            <input
-              type="number"
-              name="employee_id"
-              id="employee_id"
-              value={newPerson.employee_id}
-              onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value, 'rfid_id': companyUid + '_' + e.target.value })}
-            />
+          <div className="form_right">
+            <img src={vector} alt="vector" className="vector" />
           </div>
-
-          <p>RFID: {companyUid + '_' + newPerson.employee_id}</p>
-
-          <div className="form_group">
-            <label htmlFor="age">Age</label>
-            <input
-              type="number"
-              name="age"
-              id="age"
-              value={newPerson.age}
-              onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
-            />
-          </div>
-
-          <div className="form_group">
-            <label htmlFor="mobile">{"Mobile"}</label>
-            <input
-              type="text"
-              name="mobile"
-              id="mobile"
-              value={newPerson.mobile}
-              onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
-            />
-          </div>
-
-          <div className="form_group">
-            <label htmlFor="role">Job Role</label>
-            <input
-              type="text"
-              name="role"
-              id="role"
-              value={newPerson.role}
-              onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
-            />
-          </div>
-
-          <div className="form_group">
-            <label htmlFor="workingHours">Working Hours</label>
-            <input
-              type="number"
-              name="workingHours"
-              id="workingHours"
-              value={newPerson.workingHours}
-              onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
-            />
-          </div>
-
-          <div className="form_group">
-            <label htmlFor="salary">Salary</label>
-            <input
-              type="number"
-              name="salary"
-              id="salary"
-              value={newPerson.salary}
-              onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
-            />
-          </div>
-
-          <input
-            type="submit"
-            value="Add Worker"
-            onSubmit={(e) => handleSubmit(e)}
-          />
-        </form>
-        <p>* Please don't give white space for your name, instead you can use underscore for white spaces. Please don't use any special charachters</p>
+        </div>
       </section>
     </Fragment>
   )
