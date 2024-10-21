@@ -89,7 +89,7 @@ header nav ul li a .btn {
     font-weight: 400;
     padding: 8px 28px;
     font-family: "Sofadi One", system-ui;
-    border-radius: 10px;
+    border-radius: 5px;
 }
 
 header nav ul li a .pricing_btn {
@@ -245,10 +245,10 @@ header nav ul li a .discover_btn {
 }
 
 @media screen and (max-width: 800px) {
-    header nav{
+    header nav {
         display: none;
     }
-    
+
     header {
         display: flex;
         justify-content: center;
@@ -308,7 +308,7 @@ header nav ul li a .discover_btn {
     font-size: 1.6rem;
     font-weight: 400;
     margin-bottom: 2rem;
-} 
+}
 
 .form_page .form_main .form_left .form_container form {
     display: flex;
@@ -318,7 +318,7 @@ header nav ul li a .discover_btn {
     gap: 20px;
 }
 
-.form_page .form_main .form_left .form_container form .form_group ,
+.form_page .form_main .form_left .form_container form .form_group,
 .form_page .form_main .form_left .form_container form input {
     width: 100%;
 }
@@ -329,7 +329,7 @@ header nav ul li a .discover_btn {
     outline: none;
     border: 1px solid #757575;
     padding: 8px 14px;
-    border-radius: 10px;
+    border-radius: 5px;
     font-size: 1.1rem;
     color: #D9D9D9;
 }
@@ -342,7 +342,7 @@ header nav ul li a .discover_btn {
     color: #D9D9D9;
     border: none;
     outline: none;
-    border-radius: 10px;
+    border-radius: 5px;
     margin-top: 20px;
 }
 
@@ -445,10 +445,11 @@ header nav ul li a .discover_btn {
 .msg_container {
     background-color: #757575;
     border-left: 8px solid #1fff1f;
+    z-index: 999;
     width: auto;
     height: auto;
     position: fixed;
-    top: 1rem;
+    top: 6rem;
     right: 2rem;
     padding: 10px 20px;
     border-radius: 4px;
@@ -456,4 +457,234 @@ header nav ul li a .discover_btn {
 
 .msg_container p {
     color: #D9D9D9;
+}
+
+/* Single form page */
+.singleFormPage {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.singleFormPage form {
+    margin: 2rem auto 3rem;
+    display: flex;
+    flex-direction: column;
+    width: 320px;
+    gap: 10px;
+}
+
+.singleFormPage form input[type="submit"] {
+    background-color: #5C4DD2;
+    font-size: 1rem;
+    font-weight: 200;
+    padding: 10px 0px;
+    color: #D9D9D9;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+}
+
+.singleFormPage form input {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border: 1px solid #757575;
+    padding: 8px 14px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    color: #D9D9D9;
+}
+
+.singleFormPage .vector_img {
+    width: 400px;
+}
+
+@media screen and (max-width: 600px) {
+    .singleFormPage .vector_img {
+        width: 320px;
+    }
+}
+
+.page .profilesPage .singleFormPage {
+    padding: 20px;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* Attendance */
+.page.tablePage {
+    background-color: #1e1e2d;
+    color: #ffffff;
+    padding: 4rem 0rem;
+    min-height: 100vh;
+}
+
+.page.tablePage form {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.page.tablePage .form_group {
+    display: flex;
+    gap: 20px;
+}
+
+.page.tablePage input[type="date"],
+.page.tablePage input[type="text"] {
+    background-color: #2d2d3a;
+    color: #ffffff;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.page.tablePage .btn {
+    display: flex;
+    gap: 10px;
+}
+
+.page.tablePage input[type="submit"],
+.page.tablePage button {
+    background-color: #444;
+    color: #ffffff;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 6rem;
+}
+
+.page.tablePage input[type="submit"]:hover,
+.page.tablePage button:hover {
+    background-color: #555;
+}
+
+.page.tablePage table {
+    width: 80%;
+    background-color: #2d2d3a;
+    border-collapse: collapse;
+    margin: 20px auto;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.page.tablePage table th,
+.page.tablePage table td {
+    padding: 15px;
+    text-align: left;
+    border: 1px solid #444;
+}
+
+.page.tablePage table th {
+    background-color: #3d3d4a;
+}
+
+.page.tablePage table td {
+    background-color: #2d2d3a;
+}
+
+.page.tablePage .notFound {
+    color: #ff5555;
+    text-align: center;
+    margin-top: 20px;
+}
+
+/* Profile Page */
+
+.page.profilesPage {
+    color: #ffffff;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.page.profilesPage .profile {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background-color: #2d2d3a;
+    padding: 20px;
+    border-radius: 8px;
+    width: 60%;
+    margin: 20px auto;
+    gap: 4rem;
+}
+
+.page.profilesPage .profile .image {
+    flex: 0 0 150px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.page.profilesPage .profile .image .img {
+    width: 240px;
+    height: auto;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #444;
+}
+
+.page.profilesPage .profile .details {
+    flex: 1;
+}
+
+.page.profilesPage .profile .details table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.page.profilesPage .profile .details table th,
+.page.profilesPage .profile .details table td {
+    padding: 10px 15px;
+    text-align: left;
+    border-bottom: 1px solid #444;
+}
+
+.page.profilesPage .profile .details table th {
+    background-color: #3d3d4a;
+    color: #aaaaaa;
+}
+
+.page.profilesPage .profile .details table td {
+    background-color: #2d2d3a;
+    color: #ffffff;
+}
+
+@media (max-width: 768px) {
+    .page.profilesPage .profile {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .page.profilesPage .profile .image {
+        margin-bottom: 20px;
+    }
+
+    .page.profilesPage .profile .image .img {
+        width: 100px;
+        height: 100px;
+    }
+}
+
+/* Footer */
+footer {
+    background-color: #181818;
+    color: #f5f5f5;
+    font-size: 1rem;
+    font-weight: 200;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    line-height: 30px;
+    padding: 2rem;
+    flex-wrap: wrap;    
 }

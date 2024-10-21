@@ -1,6 +1,8 @@
 import React, { Fragment, useContext, useState } from 'react'
 import appContext from '../context/appContext'
 import { putAttendance } from '../services/serviceWorker';
+import Navbar from './Navbar';
+import vector from '../assets/attendance.png';
 
 function Attendance() {
   const { setMsg } = useContext(appContext);
@@ -42,12 +44,16 @@ function Attendance() {
 
   return (
     <Fragment>
-      <section className="page profilesPage">
+      <section className="page profilesPage singleFormPage">
+        <Navbar />
+        
         <form onSubmit={(e) => handleSubmit(e)}>
           <input type="text" name="rfid_id" id="rfid_id" onChange={(e) => setWorker({ ...worker, [e.target.id]: e.target.value })} placeholder='RFID' />
 
           <input type="submit" value="scan" onClick={(e) => handleSubmit(e)} />
         </form>
+
+        <img src={vector} alt="attendance" className="vector_img" />
       </section>
     </Fragment>
   )

@@ -2,6 +2,7 @@ import React, { Fragment, useContext, useEffect, useState } from 'react'
 import appContext from '../context/appContext'
 import { findWorker } from '../services/serviceWorker';
 import ProfileImg from '../assets/profile.png'
+import Navbar from './Navbar';
 
 function Profile() {
   const {
@@ -30,6 +31,7 @@ function Profile() {
 
   return (
     <Fragment>
+      <Navbar />
       <section className="page profilesPage">
         <div className="profile">
           {

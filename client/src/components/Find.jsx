@@ -2,6 +2,8 @@ import React, { Fragment, useContext, useState } from 'react'
 import appContext from '../context/appContext';
 import { findWorker } from '../services/serviceWorker';
 import Profile from '../assets/profile.png'
+import Navbar from './Navbar';
+import vector from '../assets/find.png';
 
 function Find() {
     const { setMsg } = useContext(appContext);
@@ -21,13 +23,13 @@ function Find() {
             }, 2000);
             return;
         }
-        
+
         // To find the worker
-        findWorker({"rfid_id": (worker.rfid_id)})
+        findWorker({ "rfid_id": (worker.rfid_id) })
             .then((response) => {
                 if (response.status) {
                     setProfile(response.data)
-                }   else {
+                } else {
                     setMsg("Worker not found");
                     setTimeout(() => {
                         setMsg("");
@@ -41,16 +43,19 @@ function Find() {
 
     return (
         <Fragment>
-            <section className="page profilesPage">
+            <section className="page profilesPage singleFormPage">
+                <Navbar />
+
                 <form onSubmit={(e) => handleSubmit(e)}>
                     <input type="text" name="rfid_id" id="rfid_id" onChange={(e) => setWorker({ ...worker, [e.target.id]: e.target.value })} placeholder='RFID' />
 
                     <input type="submit" value="Find" onClick={(e) => handleSubmit(e)} />
                 </form>
-                <div className="profile">
-                    {
-                        (profile) ? (
-                            <Fragment>
+
+                {
+                    (profile) ? (
+                        <div className="profile">
+                            <div className='profile_component'>
                                 <div className="image">
                                     <img src={Profile} alt="profile" className="img" />
                                 </div>
@@ -59,47 +64,47 @@ function Find() {
                                         <tbody>
                                             <tr>
                                                 <th>Name</th>
-                                                <td>{ profile.name }</td>
+                                                <td>{profile.name}</td>
                                             </tr>
                                             <tr>
                                                 <th>RFID</th>
-                                                <td>{ profile.rfid_id }</td>
+                                                <td>{profile.rfid_id}</td>
                                             </tr>
                                             <tr>
                                                 <th>Age</th>
-                                                <td>{ profile.age }</td>
+                                                <td>{profile.age}</td>
                                             </tr>
                                             <tr>
                                                 <th>Mobile</th>
-                                                <td>{ profile.mobile }</td>
+                                                <td>{profile.mobile}</td>
                                             </tr>
                                             <tr>
                                                 <th>Role</th>
-                                                <td>{ profile.job_role }</td>
+                                                <td>{profile.job_role}</td>
                                             </tr>
                                             <tr>
                                                 <th>Working Hours</th>
-                                                <td>{ profile.working_hours } hours</td>
+                                                <td>{profile.working_hours} hours</td>
                                             </tr>
                                             <tr>
                                                 <th>Original Salary</th>
-                                                <td>Rs.{ profile.salary }</td>
+                                                <td>Rs.{profile.salary}</td>
                                             </tr>
                                             <tr>
                                                 <th>Salary</th>
-                                                <td>Rs.{ profile.final_salary }</td>
+                                                <td>Rs.{profile.final_salary}</td>
                                             </tr>
                                             <tr>
                                                 <th>Token</th>
-                                                <td>{ profile.token }</td>
+                                                <td>{profile.token}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                                 </div>
-                            </Fragment>
-                        ) : null
-                    }
-                </div>
+                            </div>
+                        </div>
+                    ) : <img src={vector} alt="attendance" className="vector_img" />
+                }
             </section>
         </Fragment>
     )
