@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useContext } from 'react'
 import app_logo from '../assets/app_logo.png';
 import { Link } from 'react-router-dom';
 import img1 from '../assets/icons/dashboard/img1.png';
@@ -6,8 +6,13 @@ import img2 from '../assets/icons/dashboard/img2.png';
 import img3 from '../assets/icons/dashboard/img3.png';
 import img4 from '../assets/icons/dashboard/img4.png';
 import AttendanceDashboard from './AttendanceDashboard';
+import appContext from '../context/appContext';
 
 function Dashboard() {
+  const {
+    isLogin
+  } = useContext(appContext);
+
   return (
     <Fragment>
       <section className="page hero_page">
@@ -53,9 +58,15 @@ function Dashboard() {
             </div>
 
             <div className="button">
-              <Link to={'/login'}>
-                <button className="btn">Continue Login</button>
-              </Link>
+              {
+                (isLogin) ? (
+                  <Link to={'/attendance'}>
+                  <button className="btn">Get Started</button>
+                </Link>
+                ):<Link to={'/login'}>
+                  <button className="btn">Continue Login</button>
+                </Link>
+              }
             </div>
           </div>
         </div>

@@ -14,6 +14,12 @@ function App() {
   const [isLogin, setIsLogin] = useState(false);
 
   useEffect(() => {
+    if (employeeUsername && employeeGmail && employeeType && employeeRfid && companyUid && employeeUsername.trim() != "" && employeeGmail.trim() != "" && employeeType.trim() != "" && employeeRfid.trim() != "" && companyUid.trim() != "") {
+      setIsLogin(true);
+    }
+  }, [employeeUsername, employeeGmail, employeeType, employeeRfid, companyUid]);
+
+  useEffect(() => {
     getAttendaceData({"company_uid": companyUid}).then((response) => {
       if (response.status) {
         setAttendance(response.data);
