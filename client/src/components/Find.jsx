@@ -55,10 +55,10 @@ function Find() {
                 {
                     (profile) ? (
                         <div className="profile">
+                            <div className="image">
+                                <img src={Profile} alt="profile" className="img" />
+                            </div>
                             <div className='profile_component'>
-                                <div className="image">
-                                    <img src={Profile} alt="profile" className="img" />
-                                </div>
                                 <div className="details">
                                     <table>
                                         <tbody>

@@ -599,7 +599,6 @@ header nav ul li a .discover_btn {
 }
 
 /* Profile Page */
-
 .page.profilesPage {
     color: #ffffff;
     padding: 20px;
@@ -616,6 +615,9 @@ header nav ul li a .discover_btn {
     width: 60%;
     margin: 20px auto;
     gap: 4rem;
+    display: flex;
+    flex-direction: row;
+    border: 4px solid #5C4DD2;
 }
 
 .page.profilesPage .profile .image {

@@ -61,9 +61,9 @@ function Dashboard() {
               {
                 (isLogin) ? (
                   <Link to={'/attendance'}>
-                  <button className="btn">Get Started</button>
-                </Link>
-                ):<Link to={'/login'}>
+                    <button className="btn">Get Started</button>
+                  </Link>
+                ) : <Link to={'/login'}>
                   <button className="btn">Continue Login</button>
                 </Link>
               }
@@ -73,7 +73,11 @@ function Dashboard() {
 
         <div className="ellipse"></div>
       </section>
-      <AttendanceDashboard />
+      {
+        (isLogin) ? (
+          <AttendanceDashboard />
+        ) : null
+      }
     </Fragment>
   )
 }
