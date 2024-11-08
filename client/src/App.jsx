@@ -13,6 +13,15 @@ function App() {
   const [companyUid, setCompanyUid] = useState(null);
   const [isLogin, setIsLogin] = useState(false);
 
+  const getUserDetails = async () => {
+    const data = await JSON.parse(localStorage.getItem("attendie-user"));
+    setEmployeeUsername(data.name);
+    setEmployeeGmail(data.email);
+    setEmployeeRfid(data.rfid_id);
+    setEmployeeType(data.type);
+    setIsLogin(data.isLogin);
+  }
+
   useEffect(() => {
     if (employeeUsername && employeeGmail && employeeType && employeeRfid && companyUid && employeeUsername.trim() != "" && employeeGmail.trim() != "" && employeeType.trim() != "" && employeeRfid.trim() != "" && companyUid.trim() != "") {
       setIsLogin(true);
@@ -26,6 +35,10 @@ function App() {
       }
     });
   }, [attendance, setAttendance]);
+
+  useEffect(() => {
+    getUserDetails();
+  }, []);
 
   const context = {
     attendance,

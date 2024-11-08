@@ -38,7 +38,6 @@ function Login() {
 
         userLogin(formData)
             .then((response) => {
-                console.log(response.data.user_data);
                 setEmployeeUsername(response.data.user_data[0].name);
                 setEmployeeGmail(response.data.user_data[0].gmail);
                 setEmployeeType(response.data.user_data[0].type);
@@ -46,6 +45,19 @@ function Login() {
                 setCompanyUid(response.data.user_data[0].company_uid);
                 setMsg(response.data.message);
                 setIsLogin(true);
+
+                const userData = {
+                    name: response.data.user_data[0].name,
+                    email: response.data.user_data[0].gmail,
+                    type: response.data.user_data[0].type,
+                    rfid_id: response.data.user_data[0].rfid_id,
+                    company_uid: response.data.user_data[0].company_uid,
+                    isLogin: true
+                }
+                console.log(userData);
+                
+                localStorage.setItem("attendie-user", JSON.stringify(userData));
+
                 setTimeout(() => {
                     setMsg("");
                 }, 2000);
