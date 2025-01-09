@@ -1,5 +1,5 @@
 import axios from 'axios';
-const BASE_URL = "https://rfid-attendance-system-h1uv.onrender.com";
+const BASE_URL = "https://rfid-attendance-system-q3v8.onrender.com";
 // const BASE_URL = "http://localhost:5000";
 
 // To get all the attenance data
