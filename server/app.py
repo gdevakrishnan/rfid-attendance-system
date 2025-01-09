@@ -12,6 +12,7 @@ from apscheduler.triggers.cron import CronTrigger
 import base64
 from cryptography.fernet import Fernet, InvalidToken
 import json
+from bson.objectid import ObjectId
 
 app = Flask(__name__)
 CORS(app)
@@ -197,6 +198,35 @@ def find_worker():
         print(f"Error finding worker: {e}")
         return f"Error: {e}", 500  # Return error message with HTTP status code 500
 
+##############################################################################
+
+# Delete worker
+@app.route('/delete_worker', methods=['POST'])
+def delete_worker():
+    try:
+        # Parse the JSON request body
+        data = request.get_json()
+
+        # Check if _id is provided in the request
+        if '_id' not in data:
+            return jsonify({"error": "Missing '_id' in the request body"}), 400
+
+        print(data)
+        worker_id = data['_id']
+
+        # Attempt to delete the worker by ID
+        result = workersCollection.delete_one({"_id": ObjectId(worker_id)})
+
+        print(result.deleted_count)
+        # Check if a worker was deleted
+        if result.deleted_count == 1:
+            return jsonify({"message": "Worker deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Worker not found"}), 404
+
+    except Exception as e:
+        # Handle any unexpected errors
+        return jsonify({"error": f"An error occurred: {str(e)}"}), 500
 
 ##############################################################################
     

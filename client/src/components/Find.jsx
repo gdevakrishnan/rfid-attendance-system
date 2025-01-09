@@ -1,12 +1,12 @@
 import React, { Fragment, useContext, useState } from 'react'
 import appContext from '../context/appContext';
-import { findWorker } from '../services/serviceWorker';
+import { deleteWorker, findWorker } from '../services/serviceWorker';
 import Profile from '../assets/profile.png'
 import Navbar from './Navbar';
 import vector from '../assets/find.png';
 
 function Find() {
-    const { setMsg } = useContext(appContext);
+    const { setMsg, companyUid } = useContext(appContext);
     const initialState = {
         "rfid_id": ""
     }
@@ -17,6 +17,17 @@ function Find() {
         e.preventDefault();
         if (worker.rfid_id.trim() === "") {
             setMsg("Enter all the fields");
+
+            setTimeout(() => {
+                setMsg("");
+            }, 2000);
+            return;
+        }
+
+        let worker_uid = worker.rfid_id.trim().split('_')[0];
+
+        if (companyUid.trim() != worker_uid) {
+            setMsg("Invalid worker RFID");
 
             setTimeout(() => {
                 setMsg("");
@@ -47,7 +58,7 @@ function Find() {
                 <Navbar />
 
                 <form onSubmit={(e) => handleSubmit(e)}>
-                    <input type="text" name="rfid_id" id="rfid_id" onChange={(e) => setWorker({ ...worker, [e.target.id]: e.target.value })} placeholder='RFID' />
+                    <input type="text" name="rfid_id" id="rfid_id" onChange={(e) => setWorker({ ...worker, [e.target.id]: e.target.value })} placeholder='RFID' value={worker.rfid_id}/>
 
                     <input type="submit" value="Find" onClick={(e) => handleSubmit(e)} />
                 </form>
@@ -100,6 +111,23 @@ function Find() {
                                             </tr>
                                         </tbody>
                                     </table>
+                                    <button className='btn delete-worker-btn' onClick={(e) => {
+                                        e.preventDefault();
+                                        deleteWorker(profile._id)
+                                            .then((response) => {
+                                                if (response.status == 200) {
+                                                    setMsg(response.data.message.trim());
+                                                    setTimeout(() => {
+                                                        setMsg("");
+                                                    }, 2000);
+                                                }
+                                                setProfile(null);
+                                                setWorker(initialState);
+                                            })
+                                            .catch((e) => {
+                                                console.log(e.message);
+                                            });
+                                    }}>Delete</button>
                                 </div>
                             </div>
                         </div>

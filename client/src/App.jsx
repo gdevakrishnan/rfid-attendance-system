@@ -20,6 +20,7 @@ function App() {
     setEmployeeRfid(data.rfid_id);
     setEmployeeType(data.type);
     setIsLogin(data.isLogin);
+    setCompanyUid(data.company_uid);
   }
 
   useEffect(() => {
@@ -29,16 +30,13 @@ function App() {
   }, [employeeUsername, employeeGmail, employeeType, employeeRfid, companyUid]);
 
   useEffect(() => {
+    getUserDetails();
     getAttendaceData({"company_uid": companyUid}).then((response) => {
       if (response.status) {
         setAttendance(response.data);
       }
     });
-  }, [attendance, setAttendance]);
-
-  useEffect(() => {
-    getUserDetails();
-  }, []);
+  }, [companyUid, setCompanyUid]);
 
   const context = {
     attendance,

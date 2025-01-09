@@ -47,6 +47,7 @@ function AttendanceDashboard() {
           <table className='filterTable'>
             <thead>
               <tr>
+                <th>RFID</th>
                 <th>Name</th>
                 <th>Date</th>
                 <th>Time</th>
@@ -58,6 +59,7 @@ function AttendanceDashboard() {
                 filteredAttendance.map((aData) => {
                   return (
                     <tr key={aData._id}>
+                      <td>{aData.rfid_id}</td>
                       <td>{aData.name}</td>
                       <td>{aData.date}</td>
                       <td>{aData.time}</td>

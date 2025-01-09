@@ -10,7 +10,8 @@ import appContext from '../context/appContext';
 
 function Dashboard() {
   const {
-    isLogin
+    isLogin,
+    employeeType
   } = useContext(appContext);
 
   return (
@@ -74,7 +75,7 @@ function Dashboard() {
         <div className="ellipse"></div>
       </section>
       {
-        (isLogin) ? (
+        (isLogin && employeeType == "admin") ? (
           <AttendanceDashboard />
         ) : null
       }
