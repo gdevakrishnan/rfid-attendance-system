@@ -22,6 +22,7 @@ function Navbar() {
 
   const handleLogout = (e) => {
     e.preventDefault();
+    localStorage.removeItem('attendie-user');
     setEmployeeUsername(null);
     setEmployeeGmail(null);
     setEmployeeType(null);

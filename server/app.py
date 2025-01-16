@@ -234,8 +234,10 @@ def delete_worker():
 @app.route('/attendance', methods=['POST'])
 def attendance():
     data = request.json
+    # print("request from zazoor")
+    # print(data)
     rfid_id = data.get('rfid_id')
-
+    # return { "rfid_id": rfid_id }
     try:
         cursor = workersCollection.find_one({"rfid_id": rfid_id})
         put_attendance(cursor)

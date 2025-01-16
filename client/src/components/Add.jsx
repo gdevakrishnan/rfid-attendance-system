@@ -1,26 +1,24 @@
-import React, { Fragment, useContext, useState } from 'react'
+import React, { Fragment, useContext, useState } from 'react';
+import QRCode from 'qrcode';
 import { addWorker } from '../services/serviceWorker';
 import appContext from '../context/appContext';
 import vector from '../assets/worker.png';
 import Navbar from './Navbar';
 
 function Add() {
-  const {
-    setMsg,
-    companyUid
-  } = useContext(appContext);
+  const { setMsg, companyUid } = useContext(appContext);
 
   const initialState = {
-    "company_uid": companyUid,
-    "name": "",
-    "rfid_id": "",
-    "employee_id": "",
-    "role": "",
-    "age": "",
-    "mobile": "",
-    "workingHours": "",
-    "salary": ""
-  }
+    company_uid: companyUid,
+    name: "",
+    rfid_id: "",
+    employee_id: "",
+    role: "",
+    age: "",
+    mobile: "",
+    workingHours: "",
+    salary: ""
+  };
 
   const [newPerson, setNewPerson] = useState(initialState);
 
@@ -33,10 +31,22 @@ function Add() {
     return { processedText, hasSpecialCharacters };
   }
 
+  const generateQRCode = async (text) => {
+    try {
+      const qrCodeDataURL = await QRCode.toDataURL(text, { width: 300 });
+      const link = document.createElement('a');
+      link.href = qrCodeDataURL;
+      link.download = `${text}.png`;
+      link.click();
+    } catch (error) {
+      console.error('QR Code generation error:', error);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const check = processText(newPerson.name);
-    setNewPerson({ ...newPerson, "name": check.processedText });
+    setNewPerson({ ...newPerson, name: check.processedText });
 
     for (const key in newPerson) {
       if (newPerson[key] === "") {
@@ -49,7 +59,6 @@ function Add() {
     }
 
     if (!check.hasSpecialCharacters) {
-
       addWorker(newPerson)
         .then((response) => {
           setMsg(response.data.message);
@@ -57,19 +66,22 @@ function Add() {
             setMsg("");
           }, 4000);
           setNewPerson(initialState);
+
+          // Generate and download QR code
+          generateQRCode(newPerson.rfid_id);
         })
         .catch((e) => console.log(e.message));
     } else {
-      console.log("Please enter the name without special charachters");
+      console.log("Please enter the name without special characters");
     }
-  }
+  };
+
   return (
     <Fragment>
       <section className="page add_worker_page form_page">
         <Navbar />
         <div className="form_main">
           <div className="form_left">
-
             <div className="form_container">
               <h1 className="form_title">Create a worker</h1>
               <form onSubmit={(e) => handleSubmit(e)}>
@@ -80,7 +92,9 @@ function Add() {
                     id="name"
                     placeholder="Username"
                     value={newPerson.name}
-                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                    onChange={(e) =>
+                      setNewPerson({ ...newPerson, [e.target.id]: e.target.value })
+                    }
                   />
                 </div>
 
@@ -91,7 +105,13 @@ function Add() {
                     id="employee_id"
                     placeholder="Employee Id"
                     value={newPerson.employee_id}
-                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value, 'rfid_id': companyUid + '_' + e.target.value })}
+                    onChange={(e) =>
+                      setNewPerson({
+                        ...newPerson,
+                        [e.target.id]: e.target.value,
+                        rfid_id: companyUid + '_' + e.target.value
+                      })
+                    }
                   />
                 </div>
 
@@ -106,7 +126,9 @@ function Add() {
                     id="age"
                     placeholder="Age"
                     value={newPerson.age}
-                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                    onChange={(e) =>
+                      setNewPerson({ ...newPerson, [e.target.id]: e.target.value })
+                    }
                   />
                 </div>
 
@@ -117,7 +139,9 @@ function Add() {
                     id="mobile"
                     placeholder="Mobile no."
                     value={newPerson.mobile}
-                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                    onChange={(e) =>
+                      setNewPerson({ ...newPerson, [e.target.id]: e.target.value })
+                    }
                   />
                 </div>
 
@@ -128,7 +152,9 @@ function Add() {
                     id="role"
                     placeholder="Job Role"
                     value={newPerson.role}
-                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                    onChange={(e) =>
+                      setNewPerson({ ...newPerson, [e.target.id]: e.target.value })
+                    }
                   />
                 </div>
 
@@ -139,7 +165,9 @@ function Add() {
                     id="workingHours"
                     placeholder="Working Hours"
                     value={newPerson.workingHours}
-                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                    onChange={(e) =>
+                      setNewPerson({ ...newPerson, [e.target.id]: e.target.value })
+                    }
                   />
                 </div>
 
@@ -150,15 +178,13 @@ function Add() {
                     id="salary"
                     placeholder="Salary"
                     value={newPerson.salary}
-                    onChange={(e) => setNewPerson({ ...newPerson, [e.target.id]: e.target.value })}
+                    onChange={(e) =>
+                      setNewPerson({ ...newPerson, [e.target.id]: e.target.value })
+                    }
                   />
                 </div>
 
-                <input
-                  type="submit"
-                  value="Add Worker"
-                  onSubmit={(e) => handleSubmit(e)}
-                />
+                <input type="submit" value="Add Worker" />
               </form>
             </div>
           </div>
@@ -169,7 +195,7 @@ function Add() {
         </div>
       </section>
     </Fragment>
-  )
+  );
 }
 
-export default Add
+export default Add;

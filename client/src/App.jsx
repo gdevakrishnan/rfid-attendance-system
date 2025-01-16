@@ -31,20 +31,28 @@ function App() {
 
   useEffect(() => {
     getUserDetails();
-    getAttendaceData({"company_uid": companyUid}).then((response) => {
+    getAttendaceData({ "company_uid": companyUid }).then((response) => {
       if (response.status) {
         setAttendance(response.data);
       }
-    });
+    })
   }, [companyUid, setCompanyUid]);
+
+  // setInterval(() => [
+  //   getAttendaceData({ "company_uid": companyUid }).then((response) => {
+  //     if (response.status) {
+  //       setAttendance(response.data);
+  //     }
+  //   })
+  // ], 1000)
 
   const context = {
     attendance,
     msg,
     employeeUsername,
     employeeGmail,
-    employeeType, 
-    employeeRfid, 
+    employeeType,
+    employeeRfid,
     companyUid,
     isLogin,
     setAttendance,

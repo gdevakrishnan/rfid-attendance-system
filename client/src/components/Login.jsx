@@ -26,6 +26,7 @@ function Login() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        console.log("please wait...");
         for (const key in formData) {
             if (formData[key] === "") {
                 setMsg("Enter all the fields");
@@ -38,6 +39,8 @@ function Login() {
 
         userLogin(formData)
             .then((response) => {
+                console.log(response);
+                
                 setEmployeeUsername(response.data.user_data[0].name);
                 setEmployeeGmail(response.data.user_data[0].gmail);
                 setEmployeeType(response.data.user_data[0].type);
