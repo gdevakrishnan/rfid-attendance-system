@@ -38,6 +38,12 @@ function App() {
     })
   }, [companyUid, setCompanyUid]);
 
+  companyUid && getAttendaceData({ "company_uid": companyUid }).then((response) => {
+    if (response.status) {
+      setAttendance(response.data);
+    }
+  })
+
   // setInterval(() => [
   //   getAttendaceData({ "company_uid": companyUid }).then((response) => {
   //     if (response.status) {

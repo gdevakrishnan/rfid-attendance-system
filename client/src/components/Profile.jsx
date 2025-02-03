@@ -8,15 +8,22 @@ function Profile() {
   const { employeeRfid, setMsg } = useContext(appContext);
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true); // Added loading state
+  const [rfidId, setRfidId] = useState(null);
 
-  useEffect(() => {
-    if (employeeRfid) {
-      findWorker({ rfid_id: employeeRfid })
+  const fetchWorkerData = () => {
+    const rfid_id = JSON.parse(localStorage.getItem('attendie-user')).rfid_id;
+
+    if (rfid_id) {
+      setRfidId(rfid_id);
+      findWorker({ rfid_id })
         .then((response) => {
           if (response.status) {
             setProfile(response.data);
           } else {
             setMsg('Worker not found');
+            setTimeout(() => {
+              setMsg(null);
+            }, 4000);
             setProfile(null);
           }
         })
@@ -32,6 +39,14 @@ function Profile() {
       setMsg('No RFID provided');
       setLoading(false);
     }
+  }
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      fetchWorkerData();
+    }, 5000); // Fetch data every 5 seconds
+
+    return () => clearInterval(intervalId); // Clear interval on component unmount
   }, [employeeRfid, setMsg]);
 
   if (loading) {
